@@ -1,0 +1,207 @@
+/* =========================
+   ABOUT & RULES PAGE STYLES
+   (Parchment Theme)
+========================= */
+
+.about-page {
+    /* Full height and parchment background */
+    min-height: 100vh; 
+    padding-top: 120px; /* Make space for navbar */
+    background: linear-gradient(
+        180deg,
+        #e7ded3 0%,
+        #f3eadf 45%,
+        #eadfce 100%
+    );
+}
+
+.about-container {
+    max-width: 900px;
+    margin: 50px auto;
+    text-align: center;
+    padding-bottom: 80px;
+}
+
+/* Titles */
+.about-title {
+    font-family: var(--font-cinzel-decorative), serif;
+    font-size: 42px;
+    margin-bottom: 12px;
+    color: #2b1a08;
+}
+
+.about-tagline {
+    font-size: 16px;
+    color: #6b4f2d;
+    margin-bottom: 40px;
+    font-family: var(--font-poppins), sans-serif;
+}
+
+/* Section headings */
+.about-container h2 {
+    font-family: var(--font-cinzel), serif;
+    font-size: 28px;
+    margin-bottom: 12px;
+    color: #2b1a08 !important; /* Force dark color */
+}
+
+/* Paragraphs */
+.about-container p {
+    font-size: 15px;
+    line-height: 1.7;
+    color: #4a3722 !important; /* Force dark color */
+    max-width: 720px;
+    margin: 0 auto;
+    font-family: var(--font-poppins), sans-serif;
+}
+
+/* Divider */
+.about-divider {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(
+        to right,
+        transparent,
+        #c9a24d,
+        transparent
+    );
+    margin: 40px auto;
+}
+
+/* Feature grid */
+.about-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.feature h4 {
+    font-family: var(--font-cinzel), serif;
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #2b1a08 !important;
+}
+
+.feature p {
+    font-size: 14px;
+}
+
+/* CTA Section */
+.about-cta {
+    /* margin-top: 60px;
+    margin-bottom: 60px; */
+    text-align: center;
+}
+
+.about-cta h2 {
+    font-family: var(--font-cinzel-decorative), serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.about-cta p {
+    font-size: 15px;
+    color: #5b452e !important;
+    margin-bottom: 25px;
+}
+
+.about-cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    padding-bottom: 40px;
+}
+
+/* Buttons */
+.cta-btn {
+    padding: 14px 34px;
+    font-family: var(--font-cinzel), serif;
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    border-radius: 40px;
+    transition: all 0.35s ease;
+    display: inline-block;
+}
+
+/* Gold main */
+.cta-btn.primary {
+    background: linear-gradient(135deg, #f5c26b, #b9852f);
+    color: #2b1a08;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+}
+
+/* Dark secondary */
+.cta-btn.secondary {
+    border: 2px solid #b9852f;
+    color: #b9852f;
+}
+
+.cta-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.35);
+}
+
+/* =========================
+   LIGHT MODE NAVBAR (For About/Rules)
+========================= */
+/* This targets the navbar when it has the 'light-mode' class */
+.nav-bar.light-mode {
+    /* background: linear-gradient(
+        180deg,
+        rgba(231, 222, 211, 0.95),
+        rgba(243, 234, 223, 0.9)
+    );
+    border-bottom: 1px solid rgba(185, 133, 47, 0.35); */
+    padding: 22px 40px;
+}
+
+/* Link Colors in Light Mode */
+.nav-bar.light-mode .center ul li a {
+     /* Dark Text */
+    font-weight: 600;
+}
+
+.nav-bar.light-mode .center ul li a:hover {
+    color: #b9852f !important;
+}
+
+.nav-bar.light-mode .center ul li a::after {
+    background-color: #b9852f;
+}
+
+/* Icon Colors in Light Mode */
+.nav-bar.light-mode .right-social-icons i {
+    color: #2b1a08;
+}
+.nav-bar.light-mode .right-social-icons i:hover {
+    color: #b9852f;
+}
+
+/* Hamburger color in Light Mode */
+.nav-bar.light-mode .hamburger span {
+    background: #2b1a08;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 1024px) {
+    .about-container {
+        padding: 0 24px;
+    }
+    .about-features {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .about-title {
+        font-size: 34px;
+    }
+    .about-features {
+        grid-template-columns: 1fr;
+    }
+}

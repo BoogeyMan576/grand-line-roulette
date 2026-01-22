@@ -1,0 +1,781 @@
+/* =========================
+   GLOBAL RESET
+========================= */
+* {
+    max-width: 100%;
+    font-family: poppins, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+section {
+    width: 100%;
+}
+
+/* =========================
+   NAV BAR DESKTOP STYLES
+========================= */
+
+
+.nav-bar {
+    margin: 30px 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    width: calc(100% - 10px);
+    padding: 20px 40px;
+    z-index: 100;
+}
+
+/* THE MAGIC FIX: Make all 3 sections equal width */
+.nav-bar .left,
+.nav-bar .center,
+.nav-bar .right {
+    flex: 1;
+}
+
+/* Left Align Logo */
+.nav-bar .left {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 20px;
+}
+
+/* Center Align Menu */
+.nav-bar .center {
+    display: flex;
+    justify-content: center;
+}
+
+.nav-bar .center ul {
+    list-style: none;
+    display: flex;
+    gap: 30px; /* Gap handled by margin-left in li */
+    margin: 0;
+    padding: 0;
+}
+
+
+.nav-bar .center ul li {
+    margin: 0 25px; /* Spacing between words */
+}
+
+.nav-bar .center ul li a {
+    position: relative;
+    /* Use the Variable we made in layout.tsx */
+    font-family: var(--font-cinzel), serif; 
+    color: #ffffff;
+    font-size: 16px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    font-weight: 400;
+    padding-bottom: 6px;
+    transition: color 0.3s ease;
+    text-wrap: nowrap;
+}
+
+/* Hover Gold Effect */
+.nav-bar .center ul li a:hover {
+    color: #ffb347;
+}
+
+/* Underline Animation */
+.nav-bar .center ul li a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 100%;
+    height: 1.5px;
+    background-color: #c89b3c;
+    transform: translateX(-50%) scaleX(0);
+    transform-origin: center;
+    transition: transform 0.5s ease;
+}
+
+.nav-bar .center ul li a:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+
+
+/* Right Align Icons */
+.nav-bar .right {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 25px;
+}
+
+.right-social-icons {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.right-social-icons i {
+    font-size: 28px;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.right-social-icons i:hover {
+    color: #ffb347;
+}
+
+/* Hide Hamburger on Desktop */
+.hamburger {
+    display: none;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    overflow: visible;
+}
+
+.hero-image {
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0, 0, 0, .2), rgba(0, 0, 0, .5)),
+        url("/images/background.png");
+    background-size: cover;
+    z-index: 1;
+    top: -100px;
+}
+
+.hero-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -40%);
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-content-img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-center-one-piece-logo {
+    width: 480px;
+}
+
+.hero-info-box {
+    margin-top: 30px;
+    max-width: 900px;
+    padding: 25px 40px;
+    text-align: center;
+    color: #f5f5f5;
+}
+
+.hero-info-box h2 {
+    font-family: var(--font-cinzel-decorative), serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #fec96d;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-shadow:
+        0 0 4px rgba(255, 180, 80, 0.6),
+        0 0 10px rgba(255, 120, 40, 0.4);
+}
+
+.hero-info-box p {
+    font-family: var(--font-poppins), sans-serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #e6d3b0;
+    opacity: 0.9;
+}
+
+.left-button,
+.right-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-button img,
+.right-button img {
+    width: 340px;
+    display: block;
+    cursor: pointer;
+}
+
+.btn-text {
+    position: absolute;
+    font-family: var(--font-cinzel), serif;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #2b1a08;
+    text-transform: uppercase;
+    pointer-events: none;
+    text-shadow:
+    0 1px 0 #ffd27d,
+    0 2px 3px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+}
+
+.start-spin { font-size: 20px; color: #3a1d05 !important;  } 
+.how-it-works { font-size: 18px; color: #f3e1c1; text-shadow: 0 1px 0 #000, 0 2px 4px rgba(0, 0, 0, 0.8); }
+
+.left-button:hover .btn-text,
+.right-button:hover .btn-text {
+    color: #ffd27d;
+    text-shadow: 0 0 8px #8800ff, 0 0 15px #ff7b00;
+}
+
+/* =========================
+   ABOUT SECTION
+========================= */
+#about-one-piece {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 55px 130px;
+    margin: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.about-content {
+    width: 570px;
+    margin-right: 230px;
+    margin-bottom: 5px;
+}
+
+.about-tital { font-size: 45px; font-family: var(--font-cinzel-decorative), serif; }
+
+.image-divider-about {
+  width: 100%; height: 40px;
+  background-image: url("/images/divider.png");
+  background-repeat: no-repeat; background-size: contain;
+  pointer-events: none; margin-bottom: 35px;
+}
+
+.about-sub {
+    font-size: 30px; font-weight: 500; margin-bottom: 20px; font-family: 'Cinzel', serif;
+}
+
+.about-content-p-1 { margin-bottom: 25px; }
+.about-content-p-2, .about-content-p-1  { letter-spacing: 1px; font-family: 'Cinzel', serif; }
+
+.about-image-contener { display: flex; align-items: center; }
+.about-image { width: 570px; border-radius: 15px; }
+
+.hero-divider {
+    position: absolute; bottom: -30px; left: 50%; transform: translateX(-50%);
+    width: 100%; max-width: 1800px; z-index: 10; pointer-events: none;
+}
+
+.content-wrapper {
+    width: 100%;
+    background-image: url("/images/white-bg-01.png");
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+/* Separator */
+.section-separator {
+  position: sticky; top: 0; height: 61px;
+  background: url("/images/gold-line-2.png") center / contain no-repeat;
+  z-index: 20; margin-top: -30px;
+}
+
+/* =========================
+   HOW THE GAME WORKS
+========================= */
+.how-it-game-works {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 40px 0; height: auto; margin-bottom: 35px;
+}
+
+.how-it-game-works h3 {
+    font-family: 'Cinzel', serif; font-size: 38px; font-weight: 700;
+    letter-spacing: 2px; margin-bottom: 25px;
+}
+
+.how-steps {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 35px; max-width: 1290px; width: 100%;
+    padding: 0 40px; margin-top: 25px;
+}
+
+.step-number {
+    position: absolute; top: 17px; font-size: 1.5em; left: 50%;
+    transform: translateX(-50%); color: #ffffff; width: 38px; height: 38px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif; font-weight: 700;
+}
+
+.how-card h4 {
+    margin-top: 30px; font-family: 'Cinzel', serif; font-size: 20px; margin-bottom: 12px;
+}
+.how-card p { font-size: 14px; line-height: 1.6; color: #3a2a1a; }
+
+.how-card {
+    position: relative; width: 280px; height: 420px;
+    background-size: contain; background-repeat: no-repeat; background-position: center bottom;
+    display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    cursor: pointer; padding-top: 250px; padding-left: 30px; padding-right: 30px;
+    text-align: center; z-index: 2;
+}
+
+.how-card::after {
+    content: ""; position: absolute; bottom: 1px; left: 50%;
+    transform: translateX(-50%); width: 82%; height: 18px;
+    background: radial-gradient(ellipse at center, transparent 70%);
+    z-index: -2;
+}
+
+.how-card:nth-child(1) { background-image: url("/images/spin-the-wheel.png"); }
+.how-card:nth-child(2) { background-image: url("/images/assign-roles.png"); }
+.how-card:nth-child(3) { background-image: url("/images/battle-begins.png"); }
+.how-card:nth-child(4) { background-image: url("/images/determine-winner.png"); }
+
+.how-card { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease; }
+.how-card:hover { transform: translateY(-18px) scale(1.02); }
+.how-card:hover::after { width: 90%; height: 15px; filter: blur(10px); }
+
+.image-divider {
+  width: 100%; height: 40px;
+  background-image: url("/images/divider.png");
+  background-repeat: no-repeat; background-position: center;
+  background-size: contain; pointer-events: none;
+}
+
+.ornament-divider {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    width: 60%; margin: 30px 0;
+}
+.ornament-divider img { height: 42px; z-index: 2; background: transparent; }
+.ornament-divider::before, .ornament-divider::after {
+    content: ""; position: absolute; top: 50%; height: 2px;
+    background: linear-gradient(to right, transparent, #ca8a00, #9d6900);
+    transform: translateY(-50%); opacity: 0.95;
+}
+.ornament-divider::before { left: 0; width: calc(50% - 40px); }
+.ornament-divider::after { right: 0; width: calc(50% - 40px); transform: translateY(-50%) scaleX(-1); }
+
+/* =========================
+   WORLD OF ONE PIECE
+========================= */
+.world-of-one-piece {
+    display: flex; flex-direction: column; align-items: center;
+    padding: 56px 0; height: auto; margin-top: 145px;
+}
+
+.world-of-one-piece h3 {
+    font-family: 'Cinzel', serif; font-size: 38px; font-weight: 700;
+    letter-spacing: 2px; margin-top: 40px; margin-bottom: 20px;
+}
+
+.world-list {
+    display: flex; justify-content: center; gap: 55px; margin-top: 25px;
+}
+
+.world-card {
+    transition: transform 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+}
+.world-card img { width: 265px; transition: 0.3s ease; }
+.world-card span { display: block; font-family: 'Cinzel', serif; font-size: 16px; }
+.world-card:hover { box-shadow: 0 0 25px rgba(255, 180, 80, 0.45); transform: translateY(-6px) scale(1.03); }
+.world-card.selected { box-shadow: 0 0 18px rgba(255, 180, 80, 0.6); transform: scale(1.06); }
+.world-card.active span { color: #c89b3c; }
+
+.nameplate-text {
+    position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
+    font-family: 'Cinzel', serif; font-size: 18px; letter-spacing: 2px;
+    text-transform: uppercase; color: #f5e6c8;
+    text-shadow: 0 2px 0 #3a1f0a, 0 4px 6px rgba(0, 0, 0, 0.7);
+    text-wrap: nowrap; pointer-events: none;
+}
+
+/* =========================
+   WHY PLAY
+========================= */
+.image-divider-why-play{
+ width: 100%; height: 40px; background-image: url("/images/divider.png");
+ background-repeat: no-repeat; background-position: center;
+ background-size: contain; pointer-events: none; margin-top: 80px; margin-bottom: 20px;
+}
+
+.why-play { text-align: center; padding-bottom: 80px; }
+.why-play h3 { font-family: 'Cinzel', serif; font-size: 36px; letter-spacing: 2px; margin-bottom: 12px; }
+.why-sub { max-width: 700px; margin: 0 auto 60px; font-size: 15px; color: #4a3a28; }
+
+.why-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 35px; max-width: 1200px; margin: auto;
+}
+
+.why-card {
+    background: rgba(255, 248, 235, 0.85); border: 1px solid rgba(160, 120, 60, 0.35);
+    border-radius: 14px; padding: 35px 25px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.why-card:hover { transform: translateY(-10px); box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25); }
+.why-card h4 { font-family: 'Cinzel', serif; font-size: 18px; margin-bottom: 12px; }
+.why-card p { font-size: 14px; line-height: 1.6; color: #3a2a1a; }
+
+
+/* =========================
+   FOOTER STYLES (Updated)
+========================= */
+.premium-footer {
+    background: linear-gradient(
+        to bottom,
+        #1a120b,
+        #0e0905
+    );
+    padding: 80px 20px 30px;
+    color: #e6d3b0;
+    position: relative;
+    z-index: 10;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
+
+/* Brand */
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.footer-brand img {
+    width: 180px;      
+    max-width: 100%;    
+    height: auto;       
+    margin: 0 auto 15px auto; 
+    display: block;     
+}
+
+.footer-tagline {
+    font-family: var(--font-cinzel), serif; /* Next.js Variable */
+    font-size: 14px;
+    letter-spacing: 2px;
+    opacity: 0.85;
+    margin-bottom: 40px;
+}
+
+/* Links */
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 35px;
+}
+
+.footer-links a {
+    font-family: var(--font-cinzel), serif; /* Next.js Variable */
+    font-size: 14px;
+    color: #e6d3b0;
+    text-decoration: none;
+    position: relative;
+}
+
+/* underline (center expand, premium) */
+.footer-links a::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 100%;
+    height: 1.5px;
+    background-color: #c89b3c;
+    transform: translateX(-50%) scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.footer-links a:hover::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* Social */
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 36px;
+    margin-bottom: 40px; /* Added spacing before bottom bar */
+}
+
+.footer-social a {
+    width: 52px;
+    height: 52px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-social i {
+    font-size: 26px;
+    line-height: 1;
+    display: block;
+    color: #e8d9b5;
+    transition: all 0.3s ease;
+}
+
+.footer-social a:hover i {
+     color: #c89b3c;
+    transform: translateY(-4px);
+}
+
+/* Bottom */
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 18px;
+    font-size: 12px;
+    text-align: center;
+    opacity: 0.6;
+    font-family: var(--font-poppins), sans-serif;
+}
+
+/* =========================
+   RETURN RELIC (Up Button)
+========================= */
+.return-relic {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 26px;
+    font-family: var(--font-cinzel), serif; /* Next.js variable */
+    color: #ffffff;
+
+    background: radial-gradient(
+        circle at top,
+        #f3d28a,
+        #c89b3c 60%,
+        #8a5a20
+    );
+
+    cursor: pointer;
+    z-index: 999;
+
+    opacity: 0;
+    visibility: hidden; /* Added visibility so it doesn't block clicks when hidden */
+    transform: translateY(10px) scale(0.85);
+    transition:
+        opacity 0.35s ease,
+        transform 0.35s ease,
+        visibility 0.35s;
+}
+
+/* show state */
+.return-relic.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* hover */
+.return-relic:hover {
+    transform: translateY(-6px) scale(1.08);
+}
+
+/* active / press */
+.return-relic:active {
+    transform: translateY(-2px) scale(0.96);
+}
+
+
+
+
+
+
+
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+.reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease; will-change: opacity, transform;
+}
+.reveal.active { opacity: 1; transform: translateY(0); }
+.fade-up { transform: translateY(40px); }
+.fade-left { transform: translateX(-60px); }
+.fade-right { transform: translateX(60px); }
+.fade-up.active, .fade-left.active, .fade-right.active { transform: translate(0, 0); }
+
+.how-card, .world-card {
+    opacity: 0; transform: translateY(40px) scale(0.97);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transition-delay: var(--delay, 0s);
+}
+.how-card.active, .world-card.active, .why-card.active { opacity: 1; transform: translateY(0) scale(1); }
+.how-card:hover, .world-card:hover, .why-card:hover { transform: translateY(-8px) scale(1.04); }
+
+
+
+
+
+
+
+
+
+
+/* =========================================
+   FIX COLORS & TITLES (Add to end of main.css)
+========================================= */
+
+/* 1. Make ALL Titles Bold and Dark */
+h1, h2, h3, h4, .about-tital {
+    font-family: var(--font-cinzel-decorative), serif; /* Use the Next.js font variable */
+    font-weight: 600 !important; /* Force extra bold */
+    color: #120804; /* Dark almost black color */
+    letter-spacing: 1px;
+}
+
+/* 2. Fix Text Color in the Content Section (The white part) */
+.content-wrapper {
+    background-color: #ffffff;
+    color: #333; /* Dark grey/black text */
+}
+
+/* Specifically target paragraphs in the About section */
+.about-content p,
+.about-content-p-1,
+.about-content-p-2 {
+    color: #333333 !important;
+    font-family: var(--font-poppins), sans-serif;
+    font-weight: 400;
+}
+
+
+
+
+/* =========================
+   ACTIVE LINK STYLING (Desktop)
+========================= */
+/* Default (Dark Background Pages like Home) */
+.nav-bar .center ul li a.active {
+    color: #ffb347; /* Gold Color */
+    font-weight: 700;
+}
+
+/* Keep the underline visible for active links */
+.nav-bar .center ul li a.active::after {
+    transform: translateX(-50%) scaleX(1);
+}
+
+/* =========================
+   LIGHT MODE NAVBAR (For About & Rules Pages)
+========================= */
+/* 1. The Navbar Background */
+.nav-bar.light-mode {
+    background: transparent; /* Keep transparent or add light glass effect if needed */
+    padding-top: 30px; /* Ensure spacing matches */
+}
+
+/* 2. Text Color - Force DARK BROWN on Light Pages */
+.nav-bar.light-mode .center ul li a {
+    color: #2b1a08 !important; /* Dark Brown */
+    font-weight: 600;
+}
+
+/* 3. Hover Color on Light Pages */
+.nav-bar.light-mode .center ul li a:hover {
+    color: #b9852f !important; /* Lighter Gold/Brown */
+}
+
+/* 4. Active Link Color on Light Pages */
+.nav-bar.light-mode .center ul li a.active {
+    color: #b9852f !important; /* Active is also Gold/Brown */
+}
+
+/* 5. Underline Color on Light Pages */
+.nav-bar.light-mode .center ul li a::after {
+    background-color: #b9852f;
+}
+
+/* 6. Social Icons Color on Light Pages */
+.nav-bar.light-mode .right-social-icons i {
+    color: #2b1a08 !important; /* Dark Brown Icons */
+}
+
+.nav-bar.light-mode .right-social-icons i:hover {
+    color: #b9852f !important;
+}
+
+/* 7. Hamburger Menu Color on Light Pages (Mobile) */
+.nav-bar.light-mode .hamburger span {
+    background: #2b1a08 !important;
+}
+
+
+/* =========================
+   WORLD CARD INTERACTION FIXES
+========================= */
+
+/* Dimmed State (Non-selected cards) */
+.world-card.dimmed {
+    opacity: 0.4;
+    filter: grayscale(0.8);
+    transform: scale(0.95);
+    transition: all 0.4s ease;
+}
+
+/* Selected State */
+.world-card.selected {
+    opacity: 1;
+    filter: grayscale(0);
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 180, 80, 0.6);
+    z-index: 10;
+}
+
+/* Ensure the wrapper doesn't break layout */
+.world-list .reveal {
+    display: flex; /* Ensures inner card fills space */
+}
+
+
