@@ -1,26 +1,112 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #050505;
+  --foreground: #ffffff;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* --- 1. SCROLLING FIX (The most important part) --- */
+html {
+  height: 100%;
+  overflow-y: scroll !important; /* Forces the browser to show the scrollbar */
 }
 
 body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto !important; /* Allows the content to move */
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* --- WELCOME MODAL STYLES (Added to main.css to ensure loading) --- */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensures it sits on top */
+  backdrop-filter: blur(5px);
+}
+
+.wanted-poster-modal {
+  background-color: #f4e4bc;
+  width: 90%;
+  max-width: 500px;
+  padding: 40px;
+  text-align: center;
+  border: 4px solid #5a3e2b;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+  position: relative;
+  font-family: "Courier New", Courier, monospace;
+  color: #3e2723;
+}
+
+.poster-title {
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  margin: 0;
+  border-bottom: 3px solid #3e2723;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  font-family: serif;
+}
+
+.poster-sub {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+.poster-content {
+  text-align: left;
+  margin-bottom: 30px;
+}
+
+.instruction-step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.step-num {
+  background: #3e2723;
+  color: #f4e4bc;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.set-sail-btn {
+  background-color: #3e2723;
+  color: #f4e4bc;
+  border: 2px solid #3e2723;
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.2s;
+  width: 100%;
+}
+
+.set-sail-btn:hover {
+  background-color: #5d4037;
+  transform: scale(1.02);
 }

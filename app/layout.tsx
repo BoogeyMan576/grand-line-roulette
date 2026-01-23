@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, Cinzel, Cinzel_Decorative, Poppins } from "next/font/google"; 
-import Image from "next/image"; 
-import Link from "next/link"; 
 import "./globals.css"; 
+// Note: We are keeping your CSS imports, but if they cause issues, comment them out.
 import "./main.css";
-import "./Css/about.css"
+import "./Css/about.css";
 import "./responsive.css";
+
+import Image from "next/image";
+import Link from "next/link";
 import Navbar from "./components/Navbar"; 
 import ScrollToTop from "./components/ScrollToTop"; 
 
@@ -33,10 +35,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Grand Line Roulette",
   description: "One Piece Spin Battle Game",
-  icons: {
-    icon: '/path/to/my-favicon.png', // Relative path from public directory
-    apple: '/path/to/my-apple-icon.png',
-  }
 };
 
 export default function RootLayout({
@@ -45,25 +43,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    /* FORCE SCROLLING ON HTML TAG */
+    <html lang="en" style={{ height: "100%", overflowY: "scroll" }}>
       <head>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
       </head>
       
-      <body className={`${inter.className} ${cinzel.variable} ${cinzelDecorative.variable} ${poppins.variable}`}>
-        
+      {/* FORCE SCROLLING ON BODY TAG */}
+      <body 
+        className={`${inter.className} ${cinzel.variable} ${cinzelDecorative.variable} ${poppins.variable}`}
+        style={{ 
+           minHeight: "100vh", 
+           margin: 0, 
+           padding: 0, 
+           overflowY: "auto", 
+           overflowX: "hidden", 
+           backgroundColor: "#050505",
+           color: "white"
+        }}
+      >
         <Navbar />
         
         {children}
 
         <ScrollToTop />
         
-        {/* FOOTER */}
-        {/* FOOTER */}
         <footer className="premium-footer">
             <div className="footer-container">
-                
-                {/* 1. BRAND & TAGLINE (Centered) */}
                 <div className="footer-brand">
                     <Image 
                       src="/images/one-piece-logo-3.png" 
@@ -75,7 +81,6 @@ export default function RootLayout({
                     <p className="footer-tagline">Strategy. Luck. The Will of Pirates.</p>
                 </div>
                 
-                {/* 2. LINKS (Centered Row) */}
                 <div className="footer-links">
                     <Link href="/">Home</Link>
                     <Link href="/about">About Us</Link>
@@ -84,20 +89,11 @@ export default function RootLayout({
                     <Link href="/blog">Blog</Link>
                 </div>
                 
-                {/* 3. SOCIAL (Centered Row) */}
-                <div className="footer-social">
-                    <a href="#"><i className="fab fa-discord"></i></a>
-                    <a href="#"><i className="fab fa-twitter"></i></a>
-                    <a href="#"><i className="fab fa-instagram"></i></a>
-                </div>
-
-                {/* 4. COPYRIGHT BOTTOM */}
                 <div className="footer-bottom">
                     © 2026 Grand Line Roulette. All rights reserved.
                 </div>
             </div>
         </footer>
-
       </body>
     </html>
   );
