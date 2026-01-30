@@ -1,42 +1,30 @@
 "use client";
-import { useState, useEffect } from "react"; // Added useEffect
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import WelcomeModal from "../components/WelcomeModal";
 import BattleInfoPanel from "../components/BattleInfoPanel";
 import SpinWheel from "../components/SpinWheel";
 import RoleSelectionModal from "../components/RoleSelectionModal";
-import { CharacterData } from "../../utils/onePieceApi";
+import { fetchCharacters } from "../../utils/onePieceApi";
+import { CharacterData } from "../../types/Character";
 
-// DEFINE THE TEAM STRUCTURE
-type Team = {
-  [key: string]: CharacterData | null;
-};
+type Team = { [key: string]: CharacterData | null; };
 
 const INITIAL_TEAM: Team = {
-    "Captain": null,
-    "Vice-Captain": null,
-    "Tank": null,
-    "Support": null,
-    "Healer": null
+    "Captain": null, "Vice-Captain": null, "Tank": null, "Support": null, "Healer": null
 };
 
 export default function SpinBattle() {
-  // --- SCROLL UNLOCKER (THE FIX) ---
   useEffect(() => {
-    // This forces the browser to remove any "overflow: hidden" locks
     document.body.style.overflow = "auto";
-    document.body.style.overflowY = "auto";
-    document.body.style.height = "auto";
     document.documentElement.style.overflow = "auto";
-    document.documentElement.style.height = "auto";
-    document.documentElement.style.overflowY = "auto";
   }, []);
 
-  // --- GAME STATE ---
-  const [p1Power, setP1Power] = useState(1500);
-  const [p2Power, setP2Power] = useState(2300);
-  const [logs, setLogs] = useState<string[]>(["Welcome to the Grand Line! Battle has commenced."]);
+  const [characterList, setCharacterList] = useState<CharacterData[]>([]);
+  const [p1Power, setP1Power] = useState(0);
+  const [p2Power, setP2Power] = useState(0);
+  const [logs, setLogs] = useState<string[]>(["Welcome to the Grand Line! Spin to recruit."]);
   
   const [currentTurn, setCurrentTurn] = useState<'p1' | 'p2'>('p1');
   const [isSpinning, setIsSpinning] = useState(false);
@@ -52,92 +40,115 @@ export default function SpinBattle() {
 
   const addLog = (msg: string) => setLogs(prev => [...prev, msg]);
 
-  // 1. CLICK SPIN
+  // --- IMAGE URL FIXER ---
+  const getImageUrl = (path: string | null) => {
+      if (!path || path === "null" || path === "undefined") return "/images/spin/Captain.png";
+      if (path.startsWith("http")) return path;
+      return `http://localhost:5000${path}`;
+  };
+
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const data = await fetchCharacters();
+        if (data && data.length > 0) setCharacterList(data);
+      } catch (err) { console.error(err); }
+    }
+    loadData();
+  }, []);
+
   const handleSpinClick = () => {
     if (isSpinning) return;
     const currentTeam = currentTurn === 'p1' ? p1Team : p2Team;
     const isFull = Object.values(currentTeam).every(slot => slot !== null);
     if (isFull) {
-        addLog(`${currentTurn === 'p1' ? 'Player 1' : 'Player 2'} team is full!`);
+        addLog(`⚠️ ${currentTurn === 'p1' ? 'Player 1' : 'Player 2'} team is full!`);
         return;
     }
     setIsSpinning(true);
-    addLog(`${currentTurn === 'p1' ? 'Player 1' : 'Player 2'} is spinning...`);
   };
 
-  // 2. SPIN FINISHED -> OPEN MODAL
   const onSpinFinish = (character: CharacterData) => {
     setIsSpinning(false);
     setPendingCharacter(character);
     setIsModalOpen(true);
   };
 
-  // 3. CONFIRM ROLE
   const handleRoleConfirm = (role: string) => {
     if (!pendingCharacter) return;
+    const cleanBounty = pendingCharacter.bounty ? pendingCharacter.bounty.replace(/,/g, '') : "0";
+    const rawBounty = parseInt(cleanBounty, 10) || 0;
+    const powerLevel = Math.floor(Math.sqrt(rawBounty) / 10);
 
     if (currentTurn === 'p1') {
         setP1Team(prev => ({ ...prev, [role]: pendingCharacter }));
-        const powerGain = calculatePower(pendingCharacter.bounty);
-        setP1Power(prev => prev + powerGain);
-        addLog(`P1 assigned ${pendingCharacter.name} as ${role} (+${powerGain} Power)`);
+        setP1Power(prev => prev + powerLevel);
         setCurrentTurn('p2'); 
     } else {
         setP2Team(prev => ({ ...prev, [role]: pendingCharacter }));
-        const powerGain = calculatePower(pendingCharacter.bounty);
-        setP2Power(prev => prev + powerGain);
-        addLog(`P2 assigned ${pendingCharacter.name} as ${role} (+${powerGain} Power)`);
+        setP2Power(prev => prev + powerLevel);
         setCurrentTurn('p1'); 
     }
-
     setIsModalOpen(false);
     setPendingCharacter(null);
   };
 
-  // 4. SKIP TURN
+  // --- SKIP LOGIC (NO TURN SWITCH) ---
   const handleSkip = () => {
     if (!pendingCharacter) return;
+    
     if (currentTurn === 'p1') {
-        setP1SkipUsed(true);
-        addLog(`Player 1 skipped ${pendingCharacter.name}! Re-rolling...`);
+        setP1SkipUsed(true); 
+        addLog(`🚫 Player 1 SKIPPED ${pendingCharacter.name}. Spin again!`);
     } else {
         setP2SkipUsed(true);
-        addLog(`Player 2 skipped ${pendingCharacter.name}! Re-rolling...`);
+        addLog(`🚫 Player 2 SKIPPED ${pendingCharacter.name}. Spin again!`);
     }
     setIsModalOpen(false);
     setPendingCharacter(null);
-  };
-
-  const calculatePower = (bountyStr: string) => {
-      const val = parseInt(bountyStr.replace(/,/g, '') || "0", 10);
-      return Math.floor(val / 100000) + 100;
   };
 
   const handleReset = () => {
-    setP1Power(1500); setP2Power(2300);
+    setP1Power(0); setP2Power(0);
     setP1Team({ ...INITIAL_TEAM }); setP2Team({ ...INITIAL_TEAM });
     setP1SkipUsed(false); setP2SkipUsed(false);
     setCurrentTurn('p1');
-    setLogs(["Battle has been reset."]);
+    setLogs(["🔄 Battle reset!"]);
   };
 
-  // --- RENDER HELPERS ---
   const renderSlot = (role: string, team: Team) => {
     const character = team[role];
+    const frameMap: { [key: string]: string } = {
+        "Captain": "/images/spin/Captain-frame.png",
+        "Vice-Captain": "/images/spin/vice-captain-frame.png",
+        "Tank": "/images/spin/Tank-frame.png",
+        "Support": "/images/spin/support-frame.png",
+        "Healer": "/images/spin/healer-frame.png"
+    };
+    
     return (
-        <div key={role} className="crew-slot-wrapper flex flex-col items-center">
-            {/* Using inline styles to guarantee visibility */}
-            <div className="crew-slot relative" style={{ width: '130px', height: '165px' }}>
-                 <Image 
-                    src={character ? character.image : "/images/spin/Captain.png"} 
-                    alt={role} 
-                    fill 
-                    style={{ objectFit: character ? "cover" : "contain" }} 
-                    className={character ? "rounded-md" : ""}
-                 />
-                 <div className="absolute bottom-0 w-full bg-black/70 text-[#c89b3c] text-[10px] text-center py-1 uppercase font-bold tracking-wider">
-                    {role}
+        <div key={role} className="flex flex-col items-center shrink-0">
+            <div className="relative shrink-0" style={{ width: '170px', height: '215px' }}>
+                 {character && (
+                   <div className="absolute inset-0 z-0">
+                     <Image 
+                        src={getImageUrl(character.image)} 
+                        alt={character.name} 
+                        fill 
+                        style={{ objectFit: "cover" }} 
+                        className="rounded-lg" 
+                        unoptimized={true} 
+                     />
+                   </div>
+                 )}
+                 <div className="absolute inset-0 z-10 pointer-events-none">
+                    <Image src={frameMap[role] || "/images/spin/Captain-frame.png"} alt={`${role} Frame`} fill style={{ objectFit: "contain" }} />
                  </div>
+            </div>
+            <div className="bg-black border border-[#c89b3c]/30 mt-1 flex items-center justify-center py-1 shrink-0 w-[170px]">
+                <span className="text-[#c89b3c] text-[12px] font-bold uppercase tracking-wider truncate px-1">
+                    {character ? character.name : role.toUpperCase()}
+                </span>
             </div>
         </div>
     );
@@ -145,46 +156,37 @@ export default function SpinBattle() {
 
   const renderTeamSlots = (team: Team, side: 'left' | 'right') => {
     const gridPart = (
-        <div className="crew-grid-2x2 flex flex-col gap-2">
-            <div className="flex gap-2">
-                {renderSlot("Tank", team)}
-                {renderSlot("Support", team)}
-            </div>
-            <div className="flex gap-2">
-                {renderSlot("Healer", team)}
+        <div className="flex flex-col gap-4"> 
+            <div className="flex gap-4">
+                {renderSlot("Captain", team)}
                 {renderSlot("Vice-Captain", team)}
+            </div>
+            <div className="flex gap-4">
+                {renderSlot("Tank", team)}
+                {renderSlot("Support", team)} 
             </div>
         </div>
     );
-    const captainPart = (
-        <div className="h-full flex items-center justify-center">
-            {renderSlot("Captain", team)}
+    const isolatedPart = (
+        <div className="h-full flex items-center justify-center px-2">
+            {renderSlot("Healer", team)}
         </div>
     );
     return (
-      <div className={`crew-slots-container ${side} flex items-center gap-4 mt-4`}>
-        {side === 'left' ? <>{gridPart}{captainPart}</> : <>{captainPart}{gridPart}</>}
+      <div className={`flex items-center gap-6 mt-4 justify-center ${side === 'right' ? 'flex-row-reverse' : ''}`}>
+         {gridPart} {isolatedPart}
       </div>
     );
   };
 
   return (
-    // FIX: Main container forced to allow scrolling
-    <main className="spin-battle-page hide-global-nav" style={{ minHeight: '100vh', height: 'auto', overflowY: 'auto', paddingBottom: '100px', display: 'block' }}>
-      
-      {/* GLOBAL CSS OVERRIDE */}
-      <style dangerouslySetInnerHTML={{__html: `
-        nav, header, .navbar, .nav-bar { display: none !important; }
-        html, body { overflow-y: auto !important; height: auto !important; min-height: 100vh; }
-      `}} />
+    <main className="spin-battle-page hide-global-nav" style={{ minHeight: '100vh', height: 'auto', overflowY: 'auto', paddingBottom: '150px', display: 'block' }}>
+      <style dangerouslySetInnerHTML={{__html: `nav, header { display: none !important; } html, body { overflow-y: auto !important; }`}} />
       
       <RoleSelectionModal 
         isOpen={isModalOpen}
         character={pendingCharacter}
-        takenRoles={currentTurn === 'p1' 
-            ? Object.keys(p1Team).filter(k => p1Team[k] !== null)
-            : Object.keys(p2Team).filter(k => p2Team[k] !== null)
-        }
+        takenRoles={currentTurn === 'p1' ? Object.keys(p1Team).filter(k => p1Team[k] !== null) : Object.keys(p2Team).filter(k => p2Team[k] !== null)}
         canSkip={currentTurn === 'p1' ? !p1SkipUsed : !p2SkipUsed}
         onConfirm={handleRoleConfirm}
         onSkip={handleSkip}
@@ -199,41 +201,30 @@ export default function SpinBattle() {
 
       <div className="title-section">
           <h1 className="spin-battle-title-styled">SPIN BATTLE</h1>
-          <p className="spin-battle-subtitle-styled">Draft your crew. Fill all 5 roles.</p>
       </div>
 
       <div className="battle-arena-grid">
-        {/* P1 */}
         <div className={`player-column p1-column ${currentTurn === 'p1' ? 'active' : 'inactive'}`}>
-            {/* Inline styles for guaranteed image size */}
             <div className="player-panel-image relative" style={{ width: '300px', height: '400px' }}>
               <Image src="/images/spin/Player-1-panel.png" alt="Player 1" fill style={{objectFit: "contain"}} />
             </div>
             {renderTeamSlots(p1Team, 'left')}
         </div>
 
-        {/* WHEEL */}
-        <div className="wheel-section">
-            <SpinWheel onSpinFinish={onSpinFinish} isSpinning={isSpinning} />
+        {/* WHEEL COLUMN */}
+        <div className="wheel-section flex flex-col items-center justify-center pt-2">
+            <SpinWheel 
+                onSpinFinish={onSpinFinish} 
+                onSpinClick={handleSpinClick} 
+                isSpinning={isSpinning} 
+                characterList={characterList} 
+            />
             
-            <button 
-                onClick={handleSpinClick} 
-                className={`spin-image-btn ${isSpinning ? 'disabled' : ''}`}
-                disabled={isSpinning}
-            >
-              <Image src="/images/spin/spin-button.png" alt="Spin" width={220} height={80} />
-            </button>
-
-            <div className="vs-emblem-container">
-              <Image src="/images/spin/vs.png" alt="VS" width={100} height={60} />
-            </div>
-            
-            <div className="mt-4 text-[#c89b3c] text-sm uppercase tracking-widest font-bold">
+            <div className="mt-24 text-[#c89b3c] font-bold uppercase tracking-widest bg-black/50 px-4 py-1 rounded-full border border-[#c89b3c]/30">
                 Turn: {currentTurn === 'p1' ? "Player 1" : "Player 2"}
             </div>
         </div>
 
-        {/* P2 */}
         <div className={`player-column p2-column ${currentTurn === 'p2' ? 'active' : 'inactive'}`}>
             <div className="player-panel-image relative" style={{ width: '300px', height: '400px' }}>
               <Image src="/images/spin/Player-2-panel.png" alt="Player 2" fill style={{objectFit: "contain"}} />
@@ -241,7 +232,6 @@ export default function SpinBattle() {
             {renderTeamSlots(p2Team, 'right')}
         </div>
       </div>
-
       <div className="bottom-area-wrapper">
          <BattleInfoPanel logs={logs} p1Power={p1Power} p2Power={p2Power} />
       </div>
