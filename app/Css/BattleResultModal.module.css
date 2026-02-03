@@ -1,0 +1,208 @@
+/* 1. IMPORT THE NEW PIRATE FONT (Rye) */
+@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+
+/* Full Screen Dark Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* The Main Modal Box */
+.board {
+  /* Use standard font for body, specific font for titles */
+  font-family: sans-serif; 
+  
+  background: linear-gradient(180deg, #2a1a0a 0%, #1a0f05 100%);
+  border: 4px solid #c89b3c;
+  border-radius: 12px;
+  padding: 40px;
+  width: 90%;
+  max-width: 1000px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(200, 155, 60, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Header Section */
+.headerSection {
+  margin-bottom: 20px;
+}
+
+/* --- 2. UPDATE THE TITLE FONT HERE --- */
+.title {
+  font-family: 'Rye', serif; /* <--- NEW FONT */
+  color: #ffd700;
+  font-size: 3.5rem; /* Increased size slightly for impact */
+  font-weight: 400; /* Rye is already bold by nature */
+  text-transform: uppercase;
+  text-shadow: 2px 2px 0px #8b6b28, 0 0 20px rgba(255, 215, 0, 0.6);
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+.subTitle {
+  color: #ddd;
+  font-family: 'Rye', serif; /* Optional: Apply to subtitle too */
+  font-size: 1.2rem;
+  margin-top: 10px;
+  opacity: 0.9;
+  letter-spacing: 1px;
+}
+
+/* Container for Player 1 vs Player 2 */
+.teamsContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Individual Player Column */
+.teamColumn {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #444;
+}
+
+.teamTitle {
+  font-family: 'Rye', serif; /* <--- NEW FONT */
+  color: #c89b3c;
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  border-bottom: 1px solid #c89b3c;
+  padding-bottom: 5px;
+}
+
+/* Grid of Mini Character Cards */
+.charGrid {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.miniCard {
+  width: 60px;
+  height: 80px;
+  position: relative;
+  border: 2px solid #555;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #000;
+}
+
+.miniImg {
+  object-fit: cover;
+}
+
+.emptySlot {
+  width: 100%;
+  height: 100%;
+  background: #222;
+}
+
+/* "VS" Divider */
+.vsDivider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-family: 'Rye', serif; /* <--- NEW FONT */
+  color: #fff;
+  opacity: 0.2;
+  align-self: center;
+  padding: 0 20px;
+}
+
+/* Power Score Display */
+.scoreDisplay {
+  background: #111;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px solid #333;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 1.1rem;
+}
+
+.scoreDisplay strong {
+  font-family: 'Rye', serif; /* <--- NEW FONT for Numbers */
+  font-size: 2rem;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+/* Winner / Loser Highlights */
+.winnerHighlight {
+  border-color: #00ff00;
+  background: rgba(0, 255, 0, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+}
+
+.winnerHighlight strong {
+  color: #00ff00;
+}
+
+.loserHighlight {
+  border-color: #ff0000;
+  background: rgba(255, 0, 0, 0.1);
+  opacity: 0.7;
+}
+
+.loserHighlight strong {
+  color: #ff4444;
+}
+
+/* Restart Button */
+.restartBtn {
+  background-color: #c89b3c;
+  color: #000;
+  
+  /* --- 3. BUTTON FONT --- */
+  font-family: 'Rye', serif; 
+  
+  font-size: 1.5rem;
+  padding: 15px 40px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: center;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 0 #8b6b28;
+  letter-spacing: 1px;
+}
+
+.restartBtn:hover {
+  background-color: #ffd700;
+  transform: scale(1.05);
+}
+
+.restartBtn:active {
+  transform: scale(0.95);
+  box-shadow: 0 2px 0 #8b6b28;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
