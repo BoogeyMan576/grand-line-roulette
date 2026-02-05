@@ -1,12 +1,13 @@
 import { CharacterData } from "../types/Character";
 
-const API_URL = "http://localhost:5000";
+// Ensure this matches your backend port
+const API_URL = "http://localhost:5000"; 
 
 export async function fetchCharacters(): Promise<CharacterData[]> {
   try {
-    // 1. Try to connect to the Backend
-    const response = await fetch(`${API_URL}/characters`, {
-        cache: 'no-store', // Don't cache old data
+    // ✅ FIX: Added "/api" to match your server.js route
+    const response = await fetch(`${API_URL}/api/characters`, {
+        cache: 'no-store',
         method: 'GET',
     });
 
@@ -18,8 +19,7 @@ export async function fetchCharacters(): Promise<CharacterData[]> {
     return data;
 
   } catch (error) {
-    // 2. If it fails, log the error clearly
-    console.error("❌ Failed to fetch from backend. Is 'node server.js' running?", error);
-    return []; // Return empty list so game doesn't crash
+    console.error("❌ Failed to fetch from backend.", error);
+    return [];
   }
 }
