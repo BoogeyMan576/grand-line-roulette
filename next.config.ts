@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   // 1. Allow images from Backend
   images: {
+    domains: ['localhost'], // Allow images from localhost
     remotePatterns: [
       {
         protocol: 'http',
@@ -29,6 +30,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-// ❌ OLD WAY (Delete this): module.exports = nextConfig;
-// ✅ NEW WAY (Keep this):
 export default nextConfig;

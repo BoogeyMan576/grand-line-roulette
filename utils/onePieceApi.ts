@@ -2,6 +2,7 @@ import { CharacterData } from "../types/Character";
 
 // Ensure this matches your backend port
 const API_URL = "http://localhost:5000"; 
+// const API_URL = "";
 
 export async function fetchCharacters(): Promise<CharacterData[]> {
   try {
