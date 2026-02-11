@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { CharacterData } from "../../types/Character";
 
+
 interface SpinWheelProps {
   onSpinFinish: (character: CharacterData) => void;
   onSpinClick: () => void;
@@ -71,9 +72,9 @@ export default function SpinWheel({ onSpinFinish, onSpinClick, isSpinning, chara
          <Image src="/images/spin/spin-wheel.png" alt="Wheel Frame" fill priority style={{ objectFit: "contain" }} />
       </div>
 
-      {/* 3. CENTER BLACK CIRCLE + SHUFFLING IMAGE */}
+     {/* 3. CENTER BLACK CIRCLE + SHUFFLING IMAGE */}
       <div 
-         className="absolute z-10 rounded-full bg-black overflow-hidden flex items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]"
+         className="wheel-center-hole absolute z-10 rounded-full bg-black overflow-hidden flex items-center justify-center shadow-[inset_0_0_20px_rgba(0,0,0,0.8)]"
          style={{ width: CENTER_HOLE_SIZE, height: CENTER_HOLE_SIZE }}
       >
           {currentImageSrc && (
@@ -87,7 +88,6 @@ export default function SpinWheel({ onSpinFinish, onSpinClick, isSpinning, chara
               />
           )}
       </div>
-
       {/* 4. SPIN BUTTON */}
       <div className="absolute -bottom-7.5 left-1/2 -translate-x-1/2 z-100">
          <button 

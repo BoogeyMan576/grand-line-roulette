@@ -1,424 +1,211 @@
 /* --- SpinBattle.css --- */
 
-/* 1. IMPORTS */
-@import url('https://fonts.googleapis.com/css2?family=Rye&display=swap');
+/* 1. IMPORTS & GLOBAL RESET */
+@import url("https://fonts.googleapis.com/css2?family=Rye&display=swap");
 
-/* 2. GLOBAL PAGE SETTINGS */
+* { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+
+html, body, #__next, #root, main {
+  width: 100%; height: 100%; margin: 0 !important; padding: 0 !important;
+  border: none !important; outline: none !important;
+  box-shadow: none !important; overflow-x: hidden; background-color: #0d0d0d; 
+}
+
+/* Page Container */
 .spin-battle-page {
-  min-height: 100vh;
-  height: auto;
-  overflow-y: auto;
-  padding-bottom: 150px;
-  display: block;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  min-height: 100vh; width: 100vw; height: auto; overflow-y: hidden;
+  padding: 0 !important; margin: 0 !important; border: none !important; 
+  display: block; background-size: cover; background-position: center;
+  background-attachment: fixed; position: relative;
 }
 
 nav, header { display: none !important; }
 html, body { overflow-y: auto !important; }
 
-/* 3. DESKTOP HEADER */
+/* 2. DESKTOP HEADER */
 .battle-header-bar {
-  display: flex;
-  justify-content: space-between;
-  padding: 10px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  width: 100%;
+  display: flex; justify-content: space-between; padding: 10px 20px;
+  position: sticky; top: 0; z-index: 50; width: 100%; border: none !important; 
 }
-
-.desktop-nav {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.hamburger-btn { display: none; }
-.mobile-menu-dropdown { display: none; }
-
+.desktop-nav { display: flex; justify-content: space-between; width: 100%; }
+.hamburger-btn, .mobile-menu-dropdown { display: none; }
 .header-link {
-  color: #c89b3c;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 16px;
-  background: transparent;
-  border: 1px solid #c89b3c;
-  padding: 5px 15px;
-  border-radius: 4px;
-  background: rgba(0,0,0,0.3);
-  cursor: pointer;
+  color: #c89b3c; font-weight: bold; text-decoration: none; font-size: 16px;
+  background: transparent; border: 1px solid #c89b3c; padding: 5px 15px;
+  border-radius: 4px; background: rgba(0, 0, 0, 0.3); cursor: pointer;
 }
+.title-section { display: flex; justify-content: center; margin-top: -70px; margin-bottom: 20px; }
 
-.title-section {
-  display: flex;
-  justify-content: center;
-  margin-top: -70px;
-  margin-bottom: 20px;
-}
-
-/* 4. DESKTOP LAYOUT */
+/* 3. MAIN GAME LAYOUT (Desktop Default) */
 .battle-arena-grid {
-  display: flex;
+  display: flex; 
   flex-direction: row; 
-  justify-content: center;
-  align-items: flex-start;
-  gap: 20px;
+  justify-content: space-evenly; 
+  align-items: center; 
+  gap: 0;
+  width: 100%; 
+  max-width: 1600px; 
+  margin: 0 auto; 
 }
 
-.player-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: opacity 0.3s;
-}
+.player-column { display: flex; flex-direction: column; align-items: center; transition: opacity 0.3s; }
+.p1-column.inactive, .p2-column.inactive { opacity: 0.8; transform: scale(0.98); }
 
-.p1-column.inactive, .p2-column.inactive {
-  opacity: 0.8;
-  transform: scale(0.98);
-}
+.player-panel-image { position: relative; width: 300px; height: 400px; }
+.overlay-world-name { position: absolute; top: 65px; left: 0; width: 100%; text-align: center; padding: 0 32px; }
+.overlay-power-score { position: absolute; bottom: 100px; left: 0; width: 100%; text-align: center; }
+.power-text { color: #ffd700; font-weight: 900; font-size: 36px; font-family: "Rye", serif; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+.wheel-section { display: flex; flex-direction: column; align-items: center; justify-content: center; padding-top: 10px; }
+.team-wrapper { display: flex; align-items: center; gap: 16px; margin-top: 16px !important; justify-content: center; }
+.grid-part-container { display: flex; flex-direction: column; gap: 16px; }
+.grid-part-container > div { display: flex; flex-direction: row; gap: 16px; }
+.captain-frame, .vice-captain-frame, .tank-frame, .support-frame { width: 85px !important; height: 110px !important; margin: 0 !important; display: block; padding: 0; background-size: contain; }
 
-.player-panel-image {
-  position: relative;
-  width: 300px;
-  height: 400px;
-}
-
-.overlay-world-name {
-  position: absolute;
-  top: 65px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  padding: 0 32px;
-}
-
-.overlay-power-score {
-  position: absolute;
-  bottom: 100px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-}
-
-.power-text {
-  color: #ffd700;
-  font-weight: 900;
-  font-size: 36px;
-  font-family: 'Rye', serif;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-
-.wheel-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding-top: 10px;
-}
-
-.team-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-top: 16px;
-  justify-content: center;
-}
-.ml-12 { margin-left: 48px; }
-.mr-12 { margin-right: 48px; }
-
-.grid-part-container {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-/* --- 5. MOBILE RESPONSIVE OVERRIDES (Max Width 1024px) --- */
-@media (max-width: 1024px) {
-  
-  /* --- HAMBURGER MENU --- */
+/* =========================================================
+   4. DEVICE RULES 
+   ========================================================= */
+@media (max-width: 1450px) {
+  .spin-battle-page { background-attachment: scroll !important; }
   .desktop-nav { display: none !important; }
-
-  .battle-header-bar {
-    display: flex;
-    justify-content: flex-end; 
-    padding: 10px 20px;
-    width: 100%;
-    position: relative;
-    z-index: 50;
+  .battle-header-bar, .bottom-area-wrapper, .battle-info-panel,
+  .hamburger-btn, .mobile-menu-dropdown {
+    display: none !important; height: 0 !important; width: 0 !important;
+    margin: 0 !important; padding: 0 !important; overflow: hidden !important;
+    pointer-events: none !important; border: none !important; visibility: hidden !important;
   }
 
-  .hamburger-btn {
-    display: block;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    z-index: 60;
-    margin-left: auto;
-    padding: 5px;
+  /* --- 1. MOBILE PHONES (Targeting All Phones) --- */
+  @media (max-width: 950px) {
+    .battle-arena-grid {
+      position: absolute !important; top: 50% !important; left: 50% !important;
+      transform: translate(-50%, -50%);
+      
+      /* 🔥 WIDER CANVAS = 1400px 🔥 */
+      /* This creates more "empty space" between elements */
+      width: 1400px !important; 
+      height: 650px !important;
+      
+      display: flex !important; flex-direction: row !important;
+      align-items: center !important; 
+      
+      /* Push Frames to the far edges */
+      justify-content: space-between !important;
+      
+      /* Safety Padding to prevent cutting off */
+      padding: 0 20px !important; 
+      
+      gap: 0 !important;
+      margin: 0 !important; 
+      box-sizing: border-box; overflow: visible !important;
+    }
+
+    /* 🔥 WHEEL: Centered 🔥 */
+    .wheel-section {
+      order: 2 !important; 
+      width: 320px !important; 
+      height: 320px !important;
+      transform: scale(1) !important;
+      z-index: 5;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      margin: 0 !important; 
+      flex-shrink: 0 !important; 
+    }
+    
+    .wheel-section img:first-child { width: 100% !important; height: auto !important; }
+    
+    /* 🔥 BUTTON CENTERING FIX 🔥 */
+    .wheel-section img:nth-of-type(2), 
+    .wheel-section button {
+        display: block !important; 
+        width: 180px !important; 
+        max-width: 80% !important;
+        height: auto !important;
+        
+        /* Auto margins force horizontal centering */
+        margin: -20px auto 0 auto !important; 
+        
+        position: relative !important;
+        z-index: 10 !important;
+    }
+    
+    /* LEFT FRAME: Stick to Left Edge */
+    .p1-column {
+       order: 1 !important;
+       flex: 1 !important; 
+       display: flex !important; flex-direction: column !important; 
+       align-items: flex-start !important; 
+       justify-content: center !important; 
+       padding-left: 10px !important; 
+    }
+    
+    /* RIGHT FRAME: Stick to Right Edge */
+    .p2-column {
+       order: 3 !important;
+       flex: 1 !important; 
+       display: flex !important; flex-direction: column !important; 
+       align-items: flex-end !important; 
+       justify-content: center !important;
+       padding-right: 10px !important; 
+    }
+
+    .p1-column .team-wrapper, 
+    .p2-column .team-wrapper { justify-content: center !important; }
+    .p2-column .team-wrapper { flex-direction: row-reverse !important; }
   }
 
-  .mobile-menu-dropdown {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 50px;
-    right: 20px;
-    background-color: rgba(13, 13, 13, 0.98);
-    border: 1px solid #c89b3c;
-    border-radius: 8px;
-    padding: 10px;
-    width: 180px;
-    z-index: 100;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  /* --- 2. TABLETS (No Changes) --- */
+  @media (min-width: 951px) {
+    .battle-arena-grid {
+      position: absolute !important; top: 50% !important; left: 50% !important;
+      transform: translate(-50%, -50%);
+      width: 1300px !important; height: 700px !important;
+      display: flex !important; flex-direction: row !important;
+      align-items: center !important; justify-content: space-between !important;
+      gap: 0 !important; padding: 0 !important; margin: 0 !important; 
+      box-sizing: border-box; overflow: visible !important;
+    }
+    .wheel-section { width: 320px !important; height: 320px !important; order: 2 !important; }
+    .p1-column { order: 1 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
+    .p2-column { order: 3 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
+    .p1-column .team-wrapper, .p2-column .team-wrapper { justify-content: center !important; width: 100% !important; }
+    .p2-column .team-wrapper { flex-direction: row-reverse !important; }
   }
 
-  .mobile-link {
-    text-align: center;
-    padding: 12px 0;
-    width: 100%;
-    color: #c89b3c;
-    display: block;
-    border-bottom: 1px solid rgba(200, 155, 60, 0.2);
-  }
-  .mobile-link:last-child { border-bottom: none; }
-
-  /* --- MAIN ARENA LAYOUT: CENTER EVERYTHING --- */
-  .battle-arena-grid {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    /* FIX: Keep them grouped in the center, do not push to edges */
-    justify-content: center !important; 
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin-top: 5px !important;
-    box-sizing: border-box;
-    overflow-x: hidden; 
-    gap: 0px !important; 
-  }
-
-  /* --- PLAYER 1 (LEFT SIDE) --- */
-  .p1-column { 
-    order: 1 !important; 
-    /* FIX: 'auto' prevents the Healer frame from collapsing */
-    width: auto !important; 
-    max-width: none !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center !important;
-    z-index: 10;
-    margin: 0 !important;
-  }
+  /* Shared Compact Elements */
+  .wheel-section img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+  .p1-column, .p2-column { position: static !important; padding: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; width: 280px !important; flex-shrink: 0 !important; margin: 0 !important; }
+  .player-panel-image { position: relative !important; width: 260px !important; height: 60px !important; min-height: 0 !important; background: rgba(0, 0, 0, 0.8); border: 2px solid #c89b3c; border-radius: 8px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0 10px; z-index: 20; text-wrap: nowrap; margin-bottom: 10px !important; }
+  .player-panel-image img { display: none !important; }
+  .overlay-world-name { position: static !important; width: auto !important; padding: 0 !important; font-size: 16px !important; }
+  .overlay-power-score { position: static !important; width: auto !important; padding-left: 10px; padding: 10px 0 15px 10px; border-left: 1px solid #555; }
+  .grid-part-container { display: flex !important; flex-direction: column !important; gap: 6px !important; width: auto !important; }
+  .grid-part-container > div { display: flex !important; flex-direction: row !important; gap: 6px !important; }
+  .captain-frame, .vice-captain-frame, .tank-frame, .support-frame { width: 85px !important; height: 110px !important; margin: 0 !important; display: block; padding: 0; background-size: contain; }
+  .team-wrapper { display: flex !important; flex-direction: row !important; align-items: center !important; gap: px !important; transform: none !important; margin-top: 8px !important; }
   
-  .p1-column .team-wrapper {
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    /* Push content towards the wheel */
-    justify-content: flex-end !important;
-    gap: 5px !important; 
-    
-    transform: scale(0.60); 
-    
-    /* FIX: Anchor to the RIGHT so it stays connected to the wheel */
-    transform-origin: center right !important; 
-    
-    /* Slight gap from the wheel */
-    margin-right: 0px !important; 
-    margin-left: 10 !important;
-  }
-
-  /* --- PLAYER 2 (RIGHT SIDE) --- */
-  .p2-column { 
-    order: 3 !important; 
-    /* FIX: 'auto' prevents collapse */
-    width: auto !important; 
-    max-width: none !important;
-    display: flex;
-    flex-direction: column;
-    align-items: center !important;
-    z-index: 10;
-    margin: 0 !important;
-  }
-
-  .p2-column .team-wrapper {
-    display: flex !important;
-    flex-direction: row-reverse !important; 
-    align-items: center !important;
-    /* Push content towards the wheel */
-    justify-content: flex-end !important;
-    gap: 5px !important;
-    
-    transform: scale(0.60);
-    
-    /* FIX: Anchor to the LEFT so it stays connected to the wheel */
-    transform-origin: center left !important;
-    
-    /* Slight gap from the wheel */
-    margin-left: 0px !important; 
-    margin-right: 10 !important;
-  }
-
-  /* --- WHEEL (CENTER) --- */
-  .wheel-section { 
-    order: 2 !important; 
-    width: auto !important; 
-    max-width: 300px !important;
-    transform: scale(0.55); 
-    /* Small negative margin to tighten the gap if needed */
-    margin: 0 -10px !important; 
-    z-index: 5;
-    display: flex;
-    justify-content: center;
-  }
-
-  /* --- FRAMES CONFIGURATION --- */
-  .grid-part-container {
-      display: flex !important;
-      flex-direction: column !important;
-      gap: 5px !important;
-      width: auto !important;
-  }
-
-  .grid-part-container > div {
-      display: flex !important;
-      flex-direction: row !important;
-      gap: 5px !important;
-  }
-
-  .captain-frame, .vice-captain-frame, .tank-frame, .support-frame {
-      width: auto !important;
-      margin: 0 !important;
-      display: block;
-      padding: 0;
-  }
-
-  /* Healer Vertical Alignment */
-  .team-wrapper > div:last-child {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-  }
-
-  /* Reset Overlay logic */
-  .center-frame {
-      position: static !important;
-      transform: none !important;
-      margin: 0 !important;
-  }
-
-  /* --- BANNER --- */
-  .player-panel-image {
-    width: 240px !important; 
-    height: 45px !important; 
-    min-height: 0 !important;
-    background: rgba(0,0,0,0.8);
-    border: 2px solid #c89b3c;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 10px;
-    margin: 5px auto !important;
-    z-index: 20;
-    margin-bottom: 5px !important;
-  }
-  
-  .player-panel-image img { display: none !important; } 
-  
-  .overlay-world-name { position: static !important; width: auto !important; padding: 0 !important; }
-  .overlay-power-score { position: static !important; width: auto !important; padding-left: 10px; border-left: 1px solid #555; }
-
-  .world-text { font-size: 14px !important; margin: 0; color: #fff; }
-  .power-text { font-size: 16px !important; margin: 0; color: #ffd700; }
-  .power-label { display: none; }
-
+  .center-frame { position: static !important; transform: none !important; margin: 0 !important; }
   .title-section { display: none !important; }
+  .wheel-center-hole { width: 110px !important; height: 110px !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; border-radius: 50%; object-fit: cover; }
 }
 
-/* --- ROTATE DEVICE OVERLAY --- */
-.rotate-device-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #0d0d0d; /* Dark background */
-  z-index: 9999999; /* Highest priority: Covers EVERYTHING */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #c89b3c;
-  text-align: center;
-  padding: 20px;
+/* --- 🔥 GALAXY Z FOLD 5 OVERRIDE (750px - 890px) 🔥 --- */
+@media (min-width: 750px) and (max-width: 890px) {
+    .battle-arena-grid {
+        width: 1600px !important; 
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        transform: translate(-50%, -50%);
+    }
 }
 
-.rotate-icon {
-  width: 64px;
-  height: 64px;
-  margin-bottom: 20px;
-  fill: #c89b3c;
-  animation: rotate-phone-anim 2s infinite ease-in-out;
-}
+/* --- OVERLAY & HAMBURGER --- */
+.rotate-device-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0d0d0d; z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #c89b3c; padding: 20px; text-align: center; }
+.rotate-icon { width: 64px; height: 64px; margin-bottom: 20px; fill: #c89b3c; animation: rotate-phone-anim 2s infinite ease-in-out; }
+.rotate-text { font-family: "Rye", serif; font-size: 24px; letter-spacing: 2px; text-transform: uppercase; }
+@keyframes rotate-phone-anim { 0% { transform: rotate(0deg); } 25% { transform: rotate(90deg); } 50% { transform: rotate(90deg); } 75% { transform: rotate(0deg); } 100% { transform: rotate(0deg); } }
 
-.rotate-text {
-  font-family: 'Rye', serif;
-  font-size: 24px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-@keyframes rotate-phone-anim {
-  0% { transform: rotate(0deg); }
-  25% { transform: rotate(90deg); }
-  50% { transform: rotate(90deg); }
-  75% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
-}
-
-/* --- HAMBURGER ON ROTATE SCREEN --- */
-.rotate-hamburger-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  z-index: 10000002; /* Must be higher than the overlay */
-  padding: 10px;
-}
-
-.rotate-mobile-menu {
-  position: absolute;
-  top: 60px;
-  right: 20px;
-  background-color: rgba(13, 13, 13, 0.98);
-  border: 1px solid #c89b3c;
-  border-radius: 8px;
-  padding: 10px;
-  width: 180px;
-  display: flex;
-  flex-direction: column;
-  z-index: 10000002;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.8);
-}
-
-.rotate-menu-link {
-  color: #c89b3c;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 16px;
-  text-align: center;
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(200, 155, 60, 0.2);
-  display: block;
-  background: transparent;
-  cursor: pointer;
-}
+.rotate-hamburger-btn { position: absolute; top: 20px; right: 20px; background: transparent; border: none; cursor: pointer; z-index: 10000002; padding: 10px; }
+.rotate-mobile-menu { position: absolute; top: 60px; right: 20px; background-color: rgba(13, 13, 13, 0.98); border: 1px solid #c89b3c; border-radius: 8px; padding: 10px; width: 180px; display: flex; flex-direction: column; z-index: 10000002; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8); }
+.rotate-menu-link { color: #c89b3c; font-weight: bold; text-decoration: none; font-size: 16px; text-align: center; padding: 12px 0; border-bottom: 1px solid rgba(200, 155, 60, 0.2); display: block; background: transparent; cursor: pointer; }
 .rotate-menu-link:last-child { border-bottom: none; }

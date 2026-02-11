@@ -11,6 +11,8 @@ import BattleResultModal from "../components/BattleResultModal";
 import { fetchCharacters } from "../../utils/onePieceApi";
 import { CharacterData } from "../../types/Character";
 import { calculatePower } from "../../utils/gameLogic";
+import { useBattleScale } from './useBattleScale'; // Import the hook
+
 // ✅ CSS IMPORT
 import "../Css/SpinBattle.css"; 
 
@@ -45,6 +47,7 @@ export default function SpinBattle() {
   const [p1SkipUsed, setP1SkipUsed] = useState(false);
   const [p2SkipUsed, setP2SkipUsed] = useState(false);
   const [pendingCharacter, setPendingCharacter] = useState<CharacterData | null>(null);
+  useBattleScale();
 
   // ✅ LOGIC: Detect Portrait Mode
   useEffect(() => {
