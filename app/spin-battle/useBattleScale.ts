@@ -24,9 +24,18 @@ export const useBattleScale = () => {
       if (screenW >= 750 && screenW <= 890) {
          baseWidth = 1600;
       } 
-      // 🔥 PHONES: INCREASED TO 1400px 🔥
+      // 🔥 PHONES: SPLIT LOGIC 🔥
       else if (screenW <= 950) {
-         baseWidth = 1400;
+         // iPhone 14 Pro Max / 15 Plus (Wider than 415px)
+         if (screenW > 415) {
+             baseWidth = 1350; // WIDER CANVAS = MORE GAP (Prevents Overlap)
+         } 
+         // iPhone 12 / 13 / 14 Pro (Narrower)
+         else {
+             baseWidth = 1100; // TIGHTER CANVAS = BIGGER ELEMENTS (Prevents Tiny Look)
+         }
+         
+         grid.style.width = `${baseWidth}px`;
       } 
       // Tablets
       else {

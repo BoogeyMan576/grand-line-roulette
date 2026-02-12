@@ -52,12 +52,11 @@ export default function SpinBattle() {
   // ✅ LOGIC: Detect Portrait Mode
   useEffect(() => {
     const checkOrientation = () => {
-      // If Width <= 1024px AND Height > Width -> Portrait
       if (window.innerWidth <= 1024 && window.innerHeight > window.innerWidth) {
         setIsPortrait(true);
       } else {
         setIsPortrait(false);
-        setIsMenuOpen(false); // Close menu on orientation change to prevent glitches
+        setIsMenuOpen(false); 
       }
     };
     checkOrientation();
@@ -253,13 +252,8 @@ export default function SpinBattle() {
 
   return (
     <>
-      {/* ----------------------------------------------------------- */}
-      {/* 1. ROTATE MESSAGE SCREEN (Visible only on Portrait Mobile)  */}
-      {/* ----------------------------------------------------------- */}
       {isPortrait && (
         <div className="rotate-device-overlay">
-           
-           {/* HAMBURGER BUTTON (Top Right of Rotate Overlay) */}
            <button className="rotate-hamburger-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
              <svg width="30" height="30" viewBox="0 0 24 24" stroke="#c89b3c" strokeWidth="2" strokeLinecap="round">
                <line x1="3" y1="12" x2="21" y2="12"></line>
@@ -267,16 +261,12 @@ export default function SpinBattle() {
                <line x1="3" y1="18" x2="21" y2="18"></line>
              </svg>
            </button>
-
-           {/* DROPDOWN MENU (For Rotate Overlay) */}
            {isMenuOpen && (
              <div className="rotate-mobile-menu">
                <Link href="/" className="rotate-menu-link">HOME</Link>
                <button onClick={handleReset} className="rotate-menu-link">RESET BATTLE</button>
              </div>
            )}
-
-           {/* ROTATE ICON & TEXT */}
            <svg className="rotate-icon" viewBox="0 0 24 24">
              <path d="M16.48 2.52c3.27 1.55 5.61 4.72 5.97 8.48h1.5C23.44 4.84 18.29 0 12 0l-.66.03 3.81 3.81 1.33-1.32zm-6.25-.77c-.59-.59-1.54-.59-2.12 0L1.75 8.11c-.59.59-.59 1.54 0 2.12l12.02 12.02c.59.59 1.54.59 2.12 0l6.36-6.36c.59-.59.59-1.54 0-2.12L10.23 1.75zm4.6 19.44L2.81 9.17l6.36-6.36 12.02 12.02-6.36 6.36zm-7.31.29C4.25 19.94 1.91 16.76 1.55 13H.05C.56 19.16 5.71 24 12 24l.66-.03-3.81-3.81-1.33 1.32z"/>
            </svg>
@@ -284,9 +274,6 @@ export default function SpinBattle() {
         </div>
       )}
 
-      {/* ----------------------------------------------------------- */}
-      {/* 2. START SCREEN (Hidden if already started or in Portrait)  */}
-      {/* ----------------------------------------------------------- */}
       {!hasStarted && !isPortrait && (
         <div className="fixed inset-0 z-9999 bg-black flex flex-col items-center justify-center">
             <p className="text-white mb-8 text-xl tracking-wider font-light opacity-80">FOR THE BEST EXPERIENCE</p>
@@ -296,11 +283,7 @@ export default function SpinBattle() {
         </div>
       )}
 
-      {/* ----------------------------------------------------------- */}
-      {/* 3. MAIN GAME SCREEN (Active when Landscape)                 */}
-      {/* ----------------------------------------------------------- */}
       <main className="spin-battle-page hide-global-nav">
-        
         <RoleSelectionModal
           isOpen={isModalOpen}
           character={pendingCharacter}
@@ -312,32 +295,12 @@ export default function SpinBattle() {
 
         <WelcomeModal />
 
-        {/* --- MAIN HEADER (Visible when Playing) --- */}
         {!isPortrait && (
           <div className="battle-header-bar">
-            
-            {/* Desktop Nav (Hidden on mobile via CSS) */}
             <div className="desktop-nav">
               <Link href="/" className="header-link">HOME</Link>
               <button onClick={handleReset} className="header-link">RESET BATTLE</button>
             </div>
-
-            {/* ✅ HAMBURGER BUTTON (Visible on Mobile Landscape via CSS) */}
-            <button className="hamburger-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <svg width="30" height="30" viewBox="0 0 24 24" stroke="#c89b3c" strokeWidth="2" strokeLinecap="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
-
-            {/* ✅ DROPDOWN MENU (For Main Game) */}
-            {isMenuOpen && (
-              <div className="mobile-menu-dropdown">
-                <Link href="/" className="header-link mobile-link">HOME</Link>
-                <button onClick={handleReset} className="header-link mobile-link">RESET BATTLE</button>
-              </div>
-            )}
           </div>
         )}
 
@@ -348,7 +311,6 @@ export default function SpinBattle() {
         </div>
 
         <div className="battle-arena-grid">
-          {/* PLAYER 1 */}
           <div className={`player-column p1-column ${currentTurn === "p1" ? "active" : "inactive"}`}>
             <div className="player-panel-image">
               <Image src="/images/spin/Player-1-panel.png" alt="Player 1" fill style={{ objectFit: "contain" }} />
@@ -363,7 +325,6 @@ export default function SpinBattle() {
             {renderTeamSlots(p1Team, "left")}
           </div>
 
-          {/* WHEEL */}
           <div className="wheel-section">
             <SpinWheel
               onSpinFinish={onSpinFinish}
@@ -376,7 +337,6 @@ export default function SpinBattle() {
             </div>
           </div>
           
-          {/* PLAYER 2 */}
           <div className={`player-column p2-column ${currentTurn === "p2" ? "active" : "inactive"}`}>
             <div className="player-panel-image">
               <Image src="/images/spin/Player-2-panel.png" alt="Player 2" fill style={{ objectFit: "contain" }} />
@@ -402,6 +362,26 @@ export default function SpinBattle() {
           player2Team={p2Team as Record<string, CharacterData>}
           onRestart={handleReset}
         />
+
+        {/* ✅ FINAL PLACEMENT: Hamburger button and dropdown menu outside header */}
+        {!isPortrait && (
+          <>
+            <button className="hamburger-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+              <svg width="30" height="30" viewBox="0 0 24 24" stroke="#c89b3c" strokeWidth="2" strokeLinecap="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+              </svg>
+            </button>
+
+            {isMenuOpen && (
+              <div className="mobile-menu-dropdown">
+                <Link href="/" className="header-link mobile-link">HOME</Link>
+                <button onClick={handleReset} className="header-link mobile-link">RESET BATTLE</button>
+              </div>
+            )}
+          </>
+        )}
       </main>
     </>
   );
