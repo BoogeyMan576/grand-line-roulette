@@ -20,7 +20,10 @@
       background-attachment: fixed; position: relative;
     }
 
-    nav, header { display: none !important; }
+      body:has(.spin-battle-page) nav,
+      body:has(.spin-battle-page) header {
+      display: none !important;
+  }
     html, body { overflow-y: auto !important; }
 
     
@@ -130,13 +133,10 @@
             top: 50% !important;
             left: 50% !important;
             transform: translate(-50%, -50%) !important;
-            
             width: 140px !important; 
             height: 140px !important; 
-            
             border-radius: 50% !important; 
             object-fit: cover !important; 
-            
             z-index: 0 !important; 
             display: block !important;
         }
@@ -196,12 +196,37 @@
         }
         .wheel-section { width: 320px !important; height: 320px !important; order: 2 !important; position: relative !important; }
         
-        .wheel-center-hole { 
-            position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; 
-            width: 110px !important; height: 110px !important; border-radius: 50%; object-fit: cover; z-index: 0 !important;
-        }
-        .wheel-section img:first-child { z-index: 10 !important; position: relative !important; }
+        .wheel-center-hole {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 110px !important;  /* Your Tablet Size */
+    height: 110px !important;
+    border-radius: 50% !important;
+    overflow: hidden !important; 
+    display: block !important;
+    z-index: 5 !important;
+}
 
+/* 2. FORCED OVERRIDE for Next.js Image */
+/* Using 'div img' and [style] to beat Next.js inline styles */
+.wheel-center-hole img[style], 
+.wheel-center-hole img {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute !important;
+    
+    /* ✅ This fills the circle (removes black bars) */
+    object-fit: cover !important; 
+    
+    /* ✅ This keeps the head/hat at the TOP (stops cropping) */
+    object-position: center 5% !important; 
+    
+    /* Extra safety to ensure it doesn't shift */
+    top: 0 !important;
+    left: 0 !important;
+}
         .p1-column { order: 1 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
         .p2-column { order: 3 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
         .p1-column .team-wrapper, .p2-column .team-wrapper { justify-content: center !important; width: 100% !important; }

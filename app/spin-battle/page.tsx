@@ -13,6 +13,7 @@ import { CharacterData } from "../../types/Character";
 import { calculatePower } from "../../utils/gameLogic";
 import { useBattleScale } from './useBattleScale'; // Import the hook
 
+
 // ✅ CSS IMPORT
 import "../Css/SpinBattle.css"; 
 

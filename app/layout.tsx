@@ -1,41 +1,38 @@
 import type { Metadata } from "next";
 import { Inter, Cinzel, Cinzel_Decorative, Poppins } from "next/font/google"; 
 import "./globals.css"; 
-// Note: We are keeping your CSS imports, but if they cause issues, comment them out.
 import "./main.css";
 import "./Css/about.css";
 import "./responsive.css";
-
 import Image from "next/image";
 import Link from "next/link";
 import Navbar from "./components/Navbar"; 
 import ScrollToTop from "./components/ScrollToTop"; 
 
-// 1. Configure Fonts
-const inter = Inter({ subsets: ["latin"] });
+// 1. IMPORT YOUR NEW METADATA
+import { gameMetadata } from "./metadata";
+import JsonLd from "./components/JsonLd";
 
+// 2. CONFIGURE FONTS
+const inter = Inter({ subsets: ["latin"] });
 const cinzel = Cinzel({ 
   subsets: ["latin"], 
   weight: ["600", "700"],
   variable: "--font-cinzel",
 });
-
 const cinzelDecorative = Cinzel_Decorative({ 
   subsets: ["latin"], 
   weight: ["400", "700", "900"],
   variable: "--font-cinzel-decorative",
 });
-
 const poppins = Poppins({ 
   subsets: ["latin"], 
   weight: ["300", "400", "500"],
   variable: "--font-poppins",
 });
 
-export const metadata: Metadata = {
-  title: "Grand Line Roulette",
-  description: "One Piece Spin Battle Game",
-};
+// 3. EXPORT THE METADATA (Replaces your old simple metadata)
+export const metadata: Metadata = gameMetadata;
 
 export default function RootLayout({
   children,
@@ -43,13 +40,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    /* FORCE SCROLLING ON HTML TAG */
     <html lang="en" style={{ height: "100%", overflowY: "scroll" }}>
       <head>
+        <JsonLd />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
       </head>
       
-      {/* FORCE SCROLLING ON BODY TAG */}
       <body 
         className={`${inter.className} ${cinzel.variable} ${cinzelDecorative.variable} ${poppins.variable}`}
         style={{ 
