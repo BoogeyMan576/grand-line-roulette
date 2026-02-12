@@ -332,7 +332,7 @@ export default function SpinBattle() {
               isSpinning={isSpinning}
               characterList={availableCharacters} 
             />
-            <div className="mt-24 text-[#c89b3c] font-bold uppercase tracking-widest bg-black/50 px-4 py-1 rounded-full border border-[#c89b3c]/30">
+            <div className="mt-24 text-[#c89b3c] player-turn font-bold uppercase tracking-widest bg-black/50 px-4 py-1 rounded-full border border-[#c89b3c]/30">
               Turn: {currentTurn === "p1" ? "Player 1" : "Player 2"}
             </div>
           </div>

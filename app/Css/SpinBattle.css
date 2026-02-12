@@ -1,313 +1,350 @@
-  /* --- SpinBattle.css --- */
+    /* --- SpinBattle.css --- */
 
-  /* 1. IMPORTS & GLOBAL RESET */
-  @import url("https://fonts.googleapis.com/css2?family=Rye&display=swap");
+    /* 1. IMPORTS & GLOBAL RESET */
+    @import url("https://fonts.googleapis.com/css2?family=Rye&display=swap");
 
-  * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+    * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
 
-  html, body, #__next, #root, main {
-    width: 100%; height: 100%; margin: 0 !important; padding: 0 !important;
-    border: none !important; outline: none !important;
-    box-shadow: none !important; overflow-x: hidden; background-color: #0d0d0d; 
-  }
+    html, body, #__next, #root, main {
+      width: 100%; height: 100%; margin: 0 !important; padding: 0 !important;
+      border: none !important; outline: none !important;
+      box-shadow: none !important; overflow-x: hidden; background-color: #0d0d0d; 
+    }
 
-  /* Page Container */
-  .spin-battle-page {
-    min-height: 100vh; width: 100vw; height: auto; 
-    overflow: visible !important; 
-    padding: 0 !important; margin: 0 !important; border: none !important; 
-    display: block; background-size: cover; background-position: center;
-    background-attachment: fixed; position: relative;
-  }
+    /* Page Container */
+    .spin-battle-page {
+      min-height: 100vh; width: 100vw; height: auto; 
+      overflow: visible !important; 
+      padding: 0 !important; margin: 0 !important; border: none !important; 
+      display: block; background-size: cover; background-position: center;
+      background-attachment: fixed; position: relative;
+    }
 
-  nav, header { display: none !important; }
-  html, body { overflow-y: auto !important; }
+    nav, header { display: none !important; }
+    html, body { overflow-y: auto !important; }
 
-  
-
-  /* 2. DESKTOP HEADER */
-  .battle-header-bar {
-    display: flex; justify-content: space-between; padding: 10px 20px;
-    position: sticky; top: 0; z-index: 50; width: 100%; border: none !important; 
-  }
-  .desktop-nav { display: flex; justify-content: space-between; width: 100%; }
-  .hamburger-btn, .mobile-menu-dropdown { display: none; }
-  .header-link {
-    color: #c89b3c; font-weight: bold; text-decoration: none; font-size: 15px;
-    background: transparent; border: 1px solid #c89b3c; padding: 5px 15px;
-    border-radius: 4px; background: rgba(0, 0, 0, 0.3); cursor: pointer;
-  }
-  .title-section { display: flex; justify-content: center; margin-top: -70px; margin-bottom: 20px; }
-
-  /* 3. MAIN GAME LAYOUT (Desktop Default) */
-  .battle-arena-grid {
-    display: flex; 
-    flex-direction: row; 
-    justify-content: space-evenly; 
-    align-items: center; 
-    gap: 0;
-    width: 100%; 
-    max-width: 1600px; 
-    margin: 0 auto; 
-  }
-
-  .player-column { display: flex; flex-direction: column; align-items: center; transition: opacity 0.3s; }
-  .p1-column.inactive, .p2-column.inactive { opacity: 0.8; transform: scale(0.98); }
-
-  .player-panel-image { position: relative; width: 300px; height: 400px; }
-  .overlay-world-name { position: absolute; top: 65px; left: 0; width: 100%; text-align: center; padding: 0 32px; }
-  .overlay-power-score { position: absolute; bottom: 100px; left: 0; width: 100%; text-align: center; }
-  .power-text { color: #ffd700; font-weight: 900; font-size: 36px; font-family: "Rye", serif; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
-  .team-wrapper { display: flex; align-items: center; gap: 16px; margin-top: 16px !important; justify-content: center; }
-  .grid-part-container { display: flex; flex-direction: column; gap: 16px; }
-  .grid-part-container > div { display: flex; flex-direction: row; gap: 16px; }
-  .captain-frame, .vice-captain-frame, .tank-frame, .support-frame { width: 85px !important; height: 110px !important; margin: 0 !important; display: block; padding: 0; background-size: contain; }
-
-  /* =========================================================
-    4. DEVICE RULES 
-    ========================================================= */
-/* =========================================================
-   4. DEVICE RULES (IPAD & MOBILE)
-   ========================================================= */
-@media (max-width: 1450px) {
-    .spin-battle-page { background-attachment: scroll !important; }
     
-    /* ✅ TABLETS / IPADS: Show the Desktop buttons (951px to 1450px) */
-    @media (min-width: 951px) {
-        .battle-header-bar { display: flex !important; visibility: visible !important; }
-        .desktop-nav { display: flex !important; }
-        .hamburger-btn, .mobile-menu-dropdown { display: none !important; }
+
+    /* 2. DESKTOP HEADER */
+    .battle-header-bar {
+      display: flex; justify-content: space-between; padding: 10px 20px;
+      position: sticky; top: 0; z-index: 50; width: 100%; border: none !important; 
+    }
+    .desktop-nav { display: flex; justify-content: space-between; width: 100%; }
+    .hamburger-btn, .mobile-menu-dropdown { display: none; }
+    .header-link {
+      color: #c89b3c; font-weight: bold; text-decoration: none; font-size: 15px;
+      background: transparent; border: 1px solid #c89b3c; padding: 5px 15px;
+      border-radius: 4px; background: rgba(0, 0, 0, 0.3); cursor: pointer;
+    }
+    .title-section { display: flex; justify-content: center; margin-top: -70px; margin-bottom: 20px; }
+
+    /* 3. MAIN GAME LAYOUT (Desktop Default) */
+    .battle-arena-grid {
+      display: flex; 
+      flex-direction: row; 
+      justify-content: space-evenly; 
+      align-items: center; 
+      gap: 0;
+      width: 100%; 
+      max-width: 1600px; 
+      margin: 0 auto; 
     }
 
-    /* ✅ MOBILE PHONES: Hide Desktop nav, use Hamburger (Max 950px) */
-    @media (max-width: 950px) {
-        .desktop-nav, .battle-header-bar { display: none !important; }
-        /* Hamburger code remains active here */
-    }
+    .player-column { display: flex; flex-direction: column; align-items: center; transition: opacity 0.3s; }
+    .p1-column.inactive, .p2-column.inactive { opacity: 0.8; transform: scale(0.98); }
 
-    /* Keep these hidden for all mobile/tablet views as per your old code */
-    .bottom-area-wrapper, .battle-info-panel {
-      display: none !important; 
-    }
+    .player-panel-image { position: relative; width: 300px; height: 400px; }
+    .overlay-world-name { position: absolute; top: 65px; left: 0; width: 100%; text-align: center; padding: 0 32px; }
+    .overlay-power-score { position: absolute; bottom: 100px; left: 0; width: 100%; text-align: center; }
+    .power-text { color: #ffd700; font-weight: 900; font-size: 36px; font-family: "Rye", serif; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5); }
+    .team-wrapper { display: flex; align-items: center; gap: 16px; margin-top: 16px !important; justify-content: center; }
+    .grid-part-container { display: flex; flex-direction: column; gap: 16px; }
+    .grid-part-container > div { display: flex; flex-direction: row; gap: 16px; }
+    .captain-frame, .vice-captain-frame, .tank-frame, .support-frame { width: 85px !important; height: 110px !important; margin: 0 !important; display: block; padding: 0; background-size: contain; }
 
-    /* --- 1. MOBILE PHONES (Max 950px) --- */
-    @media (max-width: 950px) {
-      .battle-arena-grid {
-        position: absolute !important; top: 50% !important; left: 50% !important;
-        transform: translate(-50%, -50%);
-        
-        /* Width handled by JS */
-        height: 650px !important;
-        
-        display: flex !important; flex-direction: row !important;
-        align-items: center !important; 
-        justify-content: space-between !important;
-        
-        padding: 0 10px !important; 
-        gap: 0 !important;
-        margin: 0 !important; 
-        box-sizing: border-box; overflow: visible !important;
+    /* =========================================================
+      4. DEVICE RULES 
+      ========================================================= */
+  /* =========================================================
+    4. DEVICE RULES (IPAD & MOBILE)
+    ========================================================= */
+  @media (max-width: 1450px) {
+      .spin-battle-page { background-attachment: scroll !important; }
+      
+      /* ✅ TABLETS / IPADS: Show the Desktop buttons (951px to 1450px) */
+      @media (min-width: 951px) {
+          .battle-header-bar { display: flex !important; visibility: visible !important; }
+          .desktop-nav { display: flex !important; }
+          .hamburger-btn, .mobile-menu-dropdown { display: none !important; }
       }
 
-      /* --- WHEEL CONTAINER --- */
-      .wheel-section {
-        order: 2 !important; 
-        width: 380px !important; 
-        height: 380px !important;
-        position: relative !important; 
-        z-index: 50 !important; 
-        
-        display: flex; flex-direction: column; 
-        justify-content: center; align-items: center;
-        
-        margin: 0 !important; 
-        flex-shrink: 0 !important; 
+      /* ✅ MOBILE PHONES: Hide Desktop nav, use Hamburger (Max 950px) */
+      @media (max-width: 950px) {
+          .desktop-nav, .battle-header-bar { display: none !important; }
+          /* Hamburger code remains active here */
       }
 
-      /* LAYER 1: Black Hole (Behind) */
-      .wheel-center-hole {
-          position: absolute !important;
-          top: 50% !important;
-          left: 50% !important;
-          transform: translate(-50%, -50%) !important;
+      /* Keep these hidden for all mobile/tablet views as per your old code */
+      .bottom-area-wrapper, .battle-info-panel {
+        display: none !important; 
+      }
+
+      /* --- 1. MOBILE PHONES (Max 950px) --- */
+      @media (max-width: 950px) {
+        .battle-arena-grid {
+          position: absolute !important; top: 50% !important; left: 50% !important;
+          transform: translate(-50%, -50%);
           
-          width: 140px !important; 
-          height: 140px !important; 
+          /* Width handled by JS */
+          height: 650px !important;
           
-          border-radius: 50% !important; 
-          object-fit: cover !important; 
+          display: flex !important; flex-direction: row !important;
+          align-items: center !important; 
+          justify-content: space-between !important;
           
-          z-index: 0 !important; 
+          padding: 0 10px !important; 
+          gap: 0 !important;
+          margin: 0 !important; 
+          box-sizing: border-box; overflow: visible !important;
+        }
+
+        /* --- WHEEL CONTAINER --- */
+        .wheel-section {
+          order: 2 !important; 
+          width: 380px !important; 
+          height: 380px !important;
+          position: relative !important; 
+          z-index: 50 !important; 
+          
+          display: flex; flex-direction: column; 
+          justify-content: center; align-items: center;
+          
+          margin: 0 !important; 
+          flex-shrink: 0 !important; 
+        }
+
+        /* LAYER 1: Black Hole (Behind) */
+        .wheel-center-hole {
+            position: absolute !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            
+            width: 140px !important; 
+            height: 140px !important; 
+            
+            border-radius: 50% !important; 
+            object-fit: cover !important; 
+            
+            z-index: 0 !important; 
+            display: block !important;
+        }
+
+        /* LAYER 2: Wheel Frame (Middle) */
+        .wheel-section img:first-child { 
+            width: 100% !important; 
+            height: auto !important; 
+            position: relative !important;
+            z-index: 10 !important; 
+        }
+
+
+        /* 🔥 LEFT FRAME: BIGGER (Full Scale) 🔥 */
+        .p1-column {
+          order: 1 !important;
+          flex: 1 !important; 
+          display: flex !important; flex-direction: column !important; 
+          align-items: flex-start !important; 
+          justify-content: center !important; 
+          z-index: 5;
+          
+          /* Full Size 100% */
+          transform: scale(1.0) !important; 
+          transform-origin: center left !important;
+        }
+        
+        /* 🔥 RIGHT FRAME: BIGGER (Full Scale) 🔥 */
+        .p2-column {
+          order: 3 !important;
+          flex: 1 !important; 
+          display: flex !important; flex-direction: column !important; 
+          align-items: flex-end !important; 
+          justify-content: center !important;
+          z-index: 5;
+          
+          /* Full Size 100% */
+          transform: scale(1.0) !important; 
+          transform-origin: center right !important;
+        }
+
+        .p1-column .team-wrapper, 
+        .p2-column .team-wrapper { justify-content: center !important; }
+        .p2-column .team-wrapper { flex-direction: row-reverse !important; }
+      }
+
+      /* --- 2. TABLETS (Standard) --- */
+      @media (min-width: 951px) {
+        .battle-arena-grid {
+          position: absolute !important; top: 50% !important; left: 50% !important;
+          transform: translate(-50%, -50%);
+          width: 1300px !important; height: 700px !important;
+          display: flex !important; flex-direction: row !important;
+          align-items: center !important; justify-content: space-between !important;
+          gap: 0 !important; padding: 0 !important; margin: 0 !important; 
+          box-sizing: border-box; overflow: visible !important;
+        }
+        .wheel-section { width: 320px !important; height: 320px !important; order: 2 !important; position: relative !important; }
+        
+        .wheel-center-hole { 
+            position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; 
+            width: 110px !important; height: 110px !important; border-radius: 50%; object-fit: cover; z-index: 0 !important;
+        }
+        .wheel-section img:first-child { z-index: 10 !important; position: relative !important; }
+
+        .p1-column { order: 1 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
+        .p2-column { order: 3 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
+        .p1-column .team-wrapper, .p2-column .team-wrapper { justify-content: center !important; width: 100% !important; }
+        .p2-column .team-wrapper { flex-direction: row-reverse !important; }
+      }
+
+      /* Shared Compact Elements */
+      .wheel-section img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
+      .p1-column, .p2-column { position: static !important; padding: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; width: 280px !important; flex-shrink: 0 !important; margin: 0 !important; }
+      .player-panel-image { position: relative !important; width: 290px !important; height: 75px !important; min-height: 0 !important; background: rgba(0, 0, 0, 0.8); border: 2px solid #c89b3c; border-radius: 8px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0 10px; z-index: 20; text-wrap: nowrap; margin-bottom: 10px !important; }
+      .player-panel-image img { display: none !important; }
+      .overlay-world-name { position: static !important; width: auto !important; padding: 0 !important; font-size: 16px !important; }
+      .overlay-power-score { position: static !important; width: auto !important; padding-left: 10px;  border-left: 1px solid #555; }
+      .grid-part-container { display: flex !important; flex-direction: column !important; gap: 6px !important; width: auto !important; }
+      .grid-part-container > div { display: flex !important; flex-direction: row !important; gap: 6px !important; }
+      .captain-frame, .vice-captain-frame, .tank-frame, .support-frame { width: 85px !important; height: 110px !important; margin: 0 !important; display: block; padding: 0; background-size: contain; }
+      .team-wrapper { display: flex !important; flex-direction: row !important; align-items: center !important; gap: px !important; transform: none !important; margin-top: 8px !important; }
+      
+      .center-frame { position: static !important; transform: none !important; margin: 0 !important; }
+      .title-section { display: none !important; }
+
+      /* ✅ Add the Spin Button scaling here */
+    .spin-battle-page .absolute.-bottom-7\.5 button {
+        width: 290px !important;    /* Smaller width for landscape */
+        height: 45px !important;    /* Smaller height */
+        margin-bottom: 40px !important; /* Adjust spacing under the wheel */
+    }
+
+    /* If your Spin button is an image/frame container */
+    .spin-battle-page .absolute.-bottom-7\.5 {
+        transform: scale(1.1) !important; /* Shrinks the entire button area */
+        /* margin-top: -10px !important; */
+    }
+  }
+
+    /* --- GALAXY Z FOLD 5 OVERRIDE --- */
+    @media (min-width: 750px) and (max-width: 890px) {
+        .battle-arena-grid {
+            width: 1600px !important; 
+            position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%);
+        }
+    }
+
+    /* --- OVERLAY & HAMBURGER --- */
+    .rotate-device-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0d0d0d; z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #c89b3c; padding: 20px; text-align: center; }
+    .rotate-icon { width: 64px; height: 64px; margin-bottom: 20px; fill: #c89b3c; animation: rotate-phone-anim 2s infinite ease-in-out; }
+    .rotate-text { font-family: "Rye", serif; font-size: 24px; letter-spacing: 2px; text-transform: uppercase; }
+    @keyframes rotate-phone-anim { 0% { transform: rotate(0deg); } 25% { transform: rotate(90deg); } 50% { transform: rotate(90deg); } 75% { transform: rotate(0deg); } 100% { transform: rotate(0deg); } }
+
+
+
+  /* ✅ 3. Hamburger Opening Logic (Mobile Only) */
+  @media (max-width: 950px) {
+      /* 1. BUTTON STYLING (Both Screens) */
+      .hamburger-btn, 
+      .rotate-hamburger-btn {
+          display: flex !important;
+          visibility: visible !important;
+          position: fixed !important; 
+          top: 15px !important; /* Matches your preferred top */
+          right: 20px !important;
+          z-index: 99999999 !important;
+          background: rgba(0, 0, 0, 0.6) !important;
+          border: 1px solid #c89b3c !important;
+          border-radius: 4px !important;
+          width: 38px !important; /* Matches your preferred size */
+          height: 38px !important;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer !important;
+          pointer-events: auto !important;
+      }
+
+      /* 2. DROPDOWN BOX STYLING (Both Screens) */
+      .mobile-menu-dropdown, 
+      .rotate-mobile-menu {
+          display: flex !important;
+          flex-direction: column !important;
+          position: fixed !important;
+          top: 65px !important; /* Adjusted slightly for the smaller button */
+          right: 20px !important;
+          z-index: 99999999 !important;
+          background-color: rgba(13, 13, 13, 0.98) !important;
+          border: 1px solid #c89b3c !important;
+          border-radius: 8px !important;
+          padding: 8px !important; /* Tighter padding */
+          width: 140px !important; /* Slightly smaller width to match your edit */
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9) !important;
+          pointer-events: auto !important;
+          gap: 8px !important; /* Adds space between the two buttons */
+      }
+
+      /* 3. LINK STYLING (Applied to both menus) */
+      .mobile-link, 
+      .rotate-menu-link,
+      .mobile-menu-dropdown .header-link,
+      .rotate-mobile-menu .header-link {
+          display: block !important;
+          color: #c89b3c !important;
+          font-family: var(--font-cinzel), serif;
+          text-align: center !important;
+          text-decoration: none !important;
+          text-wrap: nowrap;
+          background: transparent !important;
+          border: 1px solid #c89b3c !important;
+          border-radius: 6px !important;
+          padding: 8px 5px !important;
+          width: 100% !important; /* Fits perfectly inside the box */
+          font-size: 11px !important; /* Matches your scale request */
+          cursor: pointer !important;
+      }
+
+      /* Unified Icon Color */
+      .hamburger-btn svg, 
+      .rotate-hamburger-btn svg {
+          stroke: #c89b3c !important;
           display: block !important;
       }
 
-      /* LAYER 2: Wheel Frame (Middle) */
-      .wheel-section img:first-child { 
-          width: 100% !important; 
-          height: auto !important; 
-          position: relative !important;
-          z-index: 10 !important; 
+      /* ✅ Add the Spin Button scaling here */
+      .spin-battle-page .absolute.-bottom-7\.5 button {
+          width: 270px !important;    /* Smaller width for landscape */
+          height: 45px !important;    /* Smaller height */
+          margin-bottom: 5px !important; /* Adjust spacing under the wheel */
+          display: flex !important;
+          justify-content: center;
+          align-items: center;
       }
 
-
-      /* 🔥 LEFT FRAME: BIGGER (Full Scale) 🔥 */
-      .p1-column {
-        order: 1 !important;
-        flex: 1 !important; 
-        display: flex !important; flex-direction: column !important; 
-        align-items: flex-start !important; 
-        justify-content: center !important; 
-        z-index: 5;
-        
-        /* Full Size 100% */
-        transform: scale(1.0) !important; 
-        transform-origin: center left !important;
+      /* If your Spin button is an image/frame container */
+      .spin-battle-page .absolute.-bottom-7\.5 {
+          transform: scale(1) !important; /* Shrinks the entire button area */
+          /* margin-top: -10px !important; */
       }
-      
-      /* 🔥 RIGHT FRAME: BIGGER (Full Scale) 🔥 */
-      .p2-column {
-        order: 3 !important;
-        flex: 1 !important; 
-        display: flex !important; flex-direction: column !important; 
-        align-items: flex-end !important; 
-        justify-content: center !important;
-        z-index: 5;
-        
-        /* Full Size 100% */
-        transform: scale(1.0) !important; 
-        transform-origin: center right !important;
-      }
-
-      .p1-column .team-wrapper, 
-      .p2-column .team-wrapper { justify-content: center !important; }
-      .p2-column .team-wrapper { flex-direction: row-reverse !important; }
-    }
-
-    /* --- 2. TABLETS (Standard) --- */
-    @media (min-width: 951px) {
-      .battle-arena-grid {
-        position: absolute !important; top: 50% !important; left: 50% !important;
-        transform: translate(-50%, -50%);
-        width: 1300px !important; height: 700px !important;
-        display: flex !important; flex-direction: row !important;
-        align-items: center !important; justify-content: space-between !important;
-        gap: 0 !important; padding: 0 !important; margin: 0 !important; 
-        box-sizing: border-box; overflow: visible !important;
-      }
-      .wheel-section { width: 320px !important; height: 320px !important; order: 2 !important; position: relative !important; }
-      
-      .wheel-center-hole { 
-          position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; 
-          width: 110px !important; height: 110px !important; border-radius: 50%; object-fit: cover; z-index: 0 !important;
-      }
-      .wheel-section img:first-child { z-index: 10 !important; position: relative !important; }
-
-      .p1-column { order: 1 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
-      .p2-column { order: 3 !important; flex: 1 !important; display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important; }
-      .p1-column .team-wrapper, .p2-column .team-wrapper { justify-content: center !important; width: 100% !important; }
-      .p2-column .team-wrapper { flex-direction: row-reverse !important; }
-    }
-
-    /* Shared Compact Elements */
-    .wheel-section img { width: 100% !important; height: 100% !important; object-fit: contain !important; }
-    .p1-column, .p2-column { position: static !important; padding: 0 !important; display: flex !important; flex-direction: column !important; align-items: center !important; width: 280px !important; flex-shrink: 0 !important; margin: 0 !important; }
-    .player-panel-image { position: relative !important; width: 290px !important; height: 75px !important; min-height: 0 !important; background: rgba(0, 0, 0, 0.8); border: 2px solid #c89b3c; border-radius: 8px; display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 0 10px; z-index: 20; text-wrap: nowrap; margin-bottom: 10px !important; }
-    .player-panel-image img { display: none !important; }
-    .overlay-world-name { position: static !important; width: auto !important; padding: 0 !important; font-size: 16px !important; }
-    .overlay-power-score { position: static !important; width: auto !important; padding-left: 10px;  border-left: 1px solid #555; }
-    .grid-part-container { display: flex !important; flex-direction: column !important; gap: 6px !important; width: auto !important; }
-    .grid-part-container > div { display: flex !important; flex-direction: row !important; gap: 6px !important; }
-    .captain-frame, .vice-captain-frame, .tank-frame, .support-frame { width: 85px !important; height: 110px !important; margin: 0 !important; display: block; padding: 0; background-size: contain; }
-    .team-wrapper { display: flex !important; flex-direction: row !important; align-items: center !important; gap: px !important; transform: none !important; margin-top: 8px !important; }
     
-    .center-frame { position: static !important; transform: none !important; margin: 0 !important; }
-    .title-section { display: none !important; }
-}
 
-  /* --- GALAXY Z FOLD 5 OVERRIDE --- */
-  @media (min-width: 750px) and (max-width: 890px) {
-      .battle-arena-grid {
-          width: 1600px !important; 
-          position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%);
-      }
+    /* 🎯 Fix Turn Text visibility and positioning */
+    .player-turn {
+        transform: translateY(50px) !important; /* Fine-tune the height position */
+        width: 180px;
+        font-size: 20px;
+    }
   }
-
-  /* --- OVERLAY & HAMBURGER --- */
-  .rotate-device-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0d0d0d; z-index: 9999999; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #c89b3c; padding: 20px; text-align: center; }
-  .rotate-icon { width: 64px; height: 64px; margin-bottom: 20px; fill: #c89b3c; animation: rotate-phone-anim 2s infinite ease-in-out; }
-  .rotate-text { font-family: "Rye", serif; font-size: 24px; letter-spacing: 2px; text-transform: uppercase; }
-  @keyframes rotate-phone-anim { 0% { transform: rotate(0deg); } 25% { transform: rotate(90deg); } 50% { transform: rotate(90deg); } 75% { transform: rotate(0deg); } 100% { transform: rotate(0deg); } }
-
-
-
-/* ✅ 3. Hamburger Opening Logic (Mobile Only) */
-@media (max-width: 950px) {
-    /* 1. BUTTON STYLING (Both Screens) */
-    .hamburger-btn, 
-    .rotate-hamburger-btn {
-        display: flex !important;
-        visibility: visible !important;
-        position: fixed !important; 
-        top: 15px !important; /* Matches your preferred top */
-        right: 20px !important;
-        z-index: 99999999 !important;
-        background: rgba(0, 0, 0, 0.6) !important;
-        border: 1px solid #c89b3c !important;
-        border-radius: 4px !important;
-        width: 38px !important; /* Matches your preferred size */
-        height: 38px !important;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer !important;
-        pointer-events: auto !important;
-    }
-
-    /* 2. DROPDOWN BOX STYLING (Both Screens) */
-    .mobile-menu-dropdown, 
-    .rotate-mobile-menu {
-        display: flex !important;
-        flex-direction: column !important;
-        position: fixed !important;
-        top: 65px !important; /* Adjusted slightly for the smaller button */
-        right: 20px !important;
-        z-index: 99999999 !important;
-        background-color: rgba(13, 13, 13, 0.98) !important;
-        border: 1px solid #c89b3c !important;
-        border-radius: 8px !important;
-        padding: 8px !important; /* Tighter padding */
-        width: 140px !important; /* Slightly smaller width to match your edit */
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.9) !important;
-        pointer-events: auto !important;
-        gap: 8px !important; /* Adds space between the two buttons */
-    }
-
-    /* 3. LINK STYLING (Applied to both menus) */
-    .mobile-link, 
-    .rotate-menu-link,
-    .mobile-menu-dropdown .header-link,
-    .rotate-mobile-menu .header-link {
-        display: block !important;
-        color: #c89b3c !important;
-        font-family: var(--font-cinzel), serif;
-        text-align: center !important;
-        text-decoration: none !important;
-        text-wrap: nowrap;
-        background: transparent !important;
-        border: 1px solid #c89b3c !important;
-        border-radius: 6px !important;
-        padding: 8px 5px !important;
-        width: 100% !important; /* Fits perfectly inside the box */
-        font-size: 11px !important; /* Matches your scale request */
-        cursor: pointer !important;
-    }
-
-    /* Unified Icon Color */
-    .hamburger-btn svg, 
-    .rotate-hamburger-btn svg {
-        stroke: #c89b3c !important;
-        display: block !important;
-    }
-}
 
 
 

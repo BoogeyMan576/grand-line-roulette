@@ -205,3 +205,71 @@
   z-index: 50;
   margin-right: 20px;
 }
+
+/* --- MOBILE LANDSCAPE RESPONSIVENESS (Max 950px) --- */
+@media (max-width: 950px) {
+  /* 1. Scale the background container */
+  .masterContainer {
+    width: 95vw;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .bgImage {
+    width: 90%;
+    height: auto;
+    object-fit: contain;
+  }
+
+  /* 2. Tighten the Row Layout */
+  .unifiedRow {
+    gap: 40px !important;    /* Reduced from 135px to fit phone width */
+    margin-top: -30px !important;
+    transform: scale(0.85);  /* Slightly shrink the entire group */
+  }
+
+  /* 3. Scale the Character Frame */
+  .characterFrameContainer {
+    width: 200px !important;  /* Smaller frame */
+    height: 280px !important;
+  }
+
+  .innerPlaceholder {
+    width: 170px !important;
+    height: 220px !important;
+  }
+
+  .nameText {
+    font-size: 1.1rem !important;
+    padding: 0.2rem 1rem !important;
+  }
+
+  /* 4. Scale the Buttons */
+  .roleButton {
+    width: 180px !important;  /* Reduced from 260px */
+    height: 50px !important;
+  }
+
+  .skipButton {
+    width: 160px !important;  /* Reduced from 230px */
+    height: 45px !important;
+  }
+
+  .buttonsGrid {
+    column-gap: 1rem !important;
+    margin-top: 15px !important;
+  }
+
+  .healerContainer {
+    margin-bottom: 1rem !important;
+  }
+
+  /* 5. Adjust Timer Position */
+  .timerDisplay {
+    font-size: 1.4rem !important;
+    top: 20px !important;
+    right: 60px !important;
+  }
+}
