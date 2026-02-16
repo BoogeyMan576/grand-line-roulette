@@ -58,8 +58,8 @@ export default function Navbar() {
                 </Link>
             </li>
             <li>
-                <Link href="/blog" className={checkActive("/blog")} onClick={() => setIsActive(false)}>
-                    Blog
+                <Link href="/contact" className={checkActive("/blog")} onClick={() => setIsActive(false)}>
+                    contact us
                 </Link>
             </li>
           </ul>

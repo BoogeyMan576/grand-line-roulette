@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+.contact-wrapper {
+  min-height: 100vh;
+  /* Dark background with subtle depth */
+  background: radial-gradient(circle at center, #151515 0%, #050505 100%);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Taaki navbar ke niche padding rahe */
+  padding: 120px 20px 40px; /* Top padding badhayi taaki navbar touch na ho */
+  font-family: 'Georgia', serif;
+}
+
+.contact-card {
+  background-color: #f2e2b0;
+  background-image: radial-gradient(#f2e2b0 70%, #e0cda7 100%);
+  width: 100%;
+  max-width: 900px; /* Wide desktop look */
+  padding: 60px;
+  border: 12px double #3e2723;
+  box-shadow: 0 0 80px rgba(0,0,0,0.9);
+  position: relative;
+  z-index: 1;
+}
+
+.contact-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 6rem;
+  text-align: center;
+  margin-bottom: 40px; /* Subtitle hagne ke baad margin badhaya */
+  color: #1a110a;
+  letter-spacing: 12px;
+  line-height: 1;
+}
+
+.form-row {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 10px;
+}
+
+.form-group { 
+  margin-bottom: 25px; 
+  flex: 1; 
+}
+
+.form-group label {
+  display: block;
+  font-weight: 900;
+  margin-bottom: 10px;
+  color: #3e2723;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+  width: 100%;
+  padding: 18px;
+  background: rgba(0,0,0,0.04);
+  border: 3px solid #3e2723;
+  font-family: inherit;
+  color: #1a110a;
+  outline: none;
+  font-size: 1.1rem;
+}
+
+.form-group textarea { 
+  height: 220px; /* Bada message box */
+  resize: none; 
+}
+
+.send-btn {
+  width: 100%;
+  background: #1a110a;
+  color: #f2e2b0;
+  padding: 22px;
+  border: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  cursor: pointer;
+  box-shadow: 0 10px 0 #d32f2f;
+  transition: 0.1s;
+  letter-spacing: 4px;
+}
+
+.send-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 6px 0 #d32f2f;
+}
+
+.back-home {
+  display: block;
+  text-align: center;
+  margin-top: 40px;
+  color: #3e2723;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.anchor-decor {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  opacity: 0.1;
+  font-size: 3.5rem;
+}
+
+/* --- RESPONSIVE FIXES --- */
+@media (max-width: 950px) {
+  .contact-wrapper { padding-top: 80px; }
+  .contact-card { padding: 30px 20px; border-width: 6px; }
+  .contact-title { font-size: 3.5rem; letter-spacing: 6px; }
+  .form-row { flex-direction: column; gap: 0; }
+  .send-btn { font-size: 2rem; padding: 15px; }
+}
