@@ -2,11 +2,13 @@
 import { useEffect, useState } from "react"; // Now we will use this!
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from 'next/navigation';
 
 
 export default function Home() {
   
   // 1. STATE: Track which world card is selected
+  const router = useRouter(); // ✅ Initialize the router
   const [selectedWorld, setSelectedWorld] = useState<string | null>(null);
 
   // 2. EFFECT: Handle Scroll Animations (Fixes Black Screen)
@@ -27,15 +29,18 @@ export default function Home() {
     reveals.forEach((el) => observer.observe(el));
   }, []);
 
-  // 3. FUNCTION: Handle Card Clicks
-  const handleWorldClick = (worldName: string) => {
-    // If clicking the same one, deselect it. Otherwise, select new one.
-    if (selectedWorld === worldName) {
-        setSelectedWorld(null);
-    } else {
-        setSelectedWorld(worldName);
-        localStorage.setItem('selectedWorld', worldName);
-    }
+    const handleWorldClick = (worldName: string) => {
+    // 1. Save to state for visual feedback
+    setSelectedWorld(worldName);
+    
+    // 2. Save to localStorage so SpinBattle can see it
+    localStorage.setItem('selectedWorld', worldName);
+    
+    // 3. ✅ IMMEDIATELY NAVIGATE to the spin page
+    // Using a small timeout makes the "Selected" animation visible for a split second
+    setTimeout(() => {
+      router.push("/spin-battle");
+    }, 300); 
   };
 
   return (
@@ -194,14 +199,14 @@ export default function Home() {
             </div>
 
             {/* Sky Island */}
-            <div 
+            {/* <div 
                 className={`world-card reveal fade-up ${selectedWorld === 'sky-island' ? 'selected' : ''} ${selectedWorld && selectedWorld !== 'sky-island' ? 'dimmed' : ''}`}
                 style={{ "--delay": "0.2s" } as React.CSSProperties}
                 onClick={() => handleWorldClick('sky-island')}
             >
               <Image src="/images/sky-island.png" alt="Sky Island" width={265} height={400} style={{ height: 'auto' }} />
               <div className="nameplate-text">Sky Island</div>
-            </div>
+            </div> */}
 
             {/* Fish-Man Island */}
             <div 

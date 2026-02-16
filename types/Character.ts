@@ -9,4 +9,5 @@ export interface CharacterData {
   haki: string[];
   devilFruit: string | null;
   status: string;
+  origin?: string;
 }

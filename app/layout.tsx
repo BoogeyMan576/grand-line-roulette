@@ -75,6 +75,13 @@ export default function RootLayout({
                       style={{ width: '180px', height: 'auto' }}
                     />
                     <p className="footer-tagline">Strategy. Luck. The Will of Pirates.</p>
+                    
+                    {/* ✅ Added Email ID here */}
+                     <div className="footer-contact">
+                       <a href="mailto:nirmalrabari@example.com" className="footer-email">
+                         <i className="fas fa-envelope"></i> nirmalrabari@example.com
+                       </a>
+                     </div>
                 </div>
                 
                 <div className="footer-links">

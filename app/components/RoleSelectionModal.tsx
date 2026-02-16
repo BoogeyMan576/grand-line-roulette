@@ -20,6 +20,7 @@ interface RoleSelectionModalProps {
   onConfirm: (role: string) => void;
   onSkip: () => void;
   canSkip: boolean;
+  recruitmentLimit: number;
 }
 
 export default function RoleSelectionModal({
@@ -29,6 +30,7 @@ export default function RoleSelectionModal({
   onConfirm,
   onSkip,
   canSkip,
+  recruitmentLimit,
 }: RoleSelectionModalProps) {
   
   const [timeLeft, setTimeLeft] = useState(3000);
@@ -47,7 +49,7 @@ export default function RoleSelectionModal({
       
       // If opening or changing character, RESET TIMER immediately
       if (isOpen) {
-          setTimeLeft(30);
+         setTimeLeft(recruitmentLimit);
       }
   }
   // ------------------------------------------------------------------

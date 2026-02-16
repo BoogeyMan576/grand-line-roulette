@@ -7,15 +7,15 @@ import WelcomeModal from "../components/WelcomeModal";
 import BattleInfoPanel from "../components/BattleInfoPanel";
 import SpinWheel from "../components/SpinWheel";
 import RoleSelectionModal from "../components/RoleSelectionModal";
-import BattleResultModal from "../components/BattleResultModal"; 
+import BattleResultModal from "../components/BattleResultModal";
 import { fetchCharacters } from "../../utils/onePieceApi";
 import { CharacterData } from "../../types/Character";
 import { calculatePower } from "../../utils/gameLogic";
-import { useBattleScale } from './useBattleScale'; // Import the hook
-
+import { useBattleScale } from "./useBattleScale"; // Import the hook
+// import { useRouter } from 'next/navigation';
 
 // ✅ CSS IMPORT
-import "../Css/SpinBattle.css"; 
+import "../Css/SpinBattle.css";
 
 type Team = { [key: string]: CharacterData | null };
 
@@ -32,22 +32,49 @@ export default function SpinBattle() {
   const [worldName, setWorldName] = useState("GRAND LINE");
   const [isBattleOver, setIsBattleOver] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+  // 2. This is the missing line that defines 'setResetMessage'
+  const [resetMessage, setResetMessage] = useState(false);
+
   // ✅ STATE: Orientation & Menu
   const [isPortrait, setIsPortrait] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showLockWarning, setShowLockWarning] = useState(false);
 
   const [characterList, setCharacterList] = useState<CharacterData[]>([]);
   const [p1Power, setP1Power] = useState(0);
   const [p2Power, setP2Power] = useState(0);
-  const [logs, setLogs] = useState<string[]>(["Welcome to the Grand Line! Spin to recruit."]);
+  const [logs, setLogs] = useState<string[]>([
+    "Welcome to the Grand Line! Spin to recruit.",
+  ]);
   const [currentTurn, setCurrentTurn] = useState<"p1" | "p2">("p1");
   const [isSpinning, setIsSpinning] = useState(false);
   const [p1Team, setP1Team] = useState<Team>({ ...INITIAL_TEAM });
   const [p2Team, setP2Team] = useState<Team>({ ...INITIAL_TEAM });
   const [p1SkipUsed, setP1SkipUsed] = useState(false);
   const [p2SkipUsed, setP2SkipUsed] = useState(false);
-  const [pendingCharacter, setPendingCharacter] = useState<CharacterData | null>(null);
+  const [pendingCharacter, setPendingCharacter] =
+    useState<CharacterData | null>(null);
+
+  // ✅ NEW STATE FOR SYNCED TIMER
+  // Around Line 45 - REPLACE the old recruitmentLimit state with this:
+// ✅ UPDATED STATE SECTION
+const [recruitmentLimit, setRecruitmentLimit] = useState<number>(() => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('recruitmentLimit');
+    return saved ? parseInt(saved) : 30; // 30 is the default if no time is saved
+  }
+  return 30;
+});
+
+const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+const [pendingWorld, setPendingWorld] = useState(() => {
+  if (typeof window !== "undefined") {
+    return localStorage.getItem("selectedWorld") || "";
+  }
+  return "";
+});
+
   useBattleScale();
 
   // ✅ LOGIC: Detect Portrait Mode
@@ -57,7 +84,7 @@ export default function SpinBattle() {
         setIsPortrait(true);
       } else {
         setIsPortrait(false);
-        setIsMenuOpen(false); 
+        setIsMenuOpen(false);
       }
     };
     checkOrientation();
@@ -68,22 +95,32 @@ export default function SpinBattle() {
   useEffect(() => {
     document.body.style.overflow = "auto";
     document.documentElement.style.overflow = "auto";
-    if (typeof document !== 'undefined' && document.fullscreenElement) {
-        setTimeout(() => setHasStarted(true), 0);
+    if (typeof document !== "undefined" && document.fullscreenElement) {
+      setTimeout(() => setHasStarted(true), 0);
     }
   }, []);
 
-  useEffect(() => {
+ useEffect(() => {
     if (typeof window !== 'undefined') {
-       const saved = localStorage.getItem('selectedWorld');
-       if (saved) setTimeout(() => setWorldName(saved.replace(/-/g, ' ').toUpperCase()), 0);
-    }
-  }, []);
+      const saved = localStorage.getItem('selectedWorld');
+      
+      // Use a small timeout (0ms) to move the update out of the synchronous render cycle
+      const timeout = setTimeout(() => {
+        if (saved) {
+          setWorldName(saved.replace(/-/g, ' ').toUpperCase());
+        } else {
+          setWorldName("NONE"); 
+        }
+      }, 0);
 
+      return () => clearTimeout(timeout);
+    }
+  }, []); // Keeps dependency array empty so it only runs once on mount
+  
   useEffect(() => {
     const p1Full = Object.values(p1Team).every((slot) => slot !== null);
     const p2Full = Object.values(p2Team).every((slot) => slot !== null);
-    if (p1Full && p2Full) setTimeout(() => setIsBattleOver(true), 1000); 
+    if (p1Full && p2Full) setTimeout(() => setIsBattleOver(true), 1000);
   }, [p1Team, p2Team]);
 
   useEffect(() => {
@@ -100,15 +137,19 @@ export default function SpinBattle() {
 
   const handleStartInteraction = async () => {
     try {
-        if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
-    } catch (err) { console.error("Full screen error:", err); }
+      if (!document.fullscreenElement)
+        await document.documentElement.requestFullscreen();
+    } catch (err) {
+      console.error("Full screen error:", err);
+    }
     setHasStarted(true);
   };
 
   const addLog = (msg: string) => setLogs((prev) => [...prev, msg]);
 
   const getImageUrl = (path: string | null) => {
-    if (!path || path === "null" || path === "undefined") return "/images/spin/Captain.png";
+    if (!path || path === "null" || path === "undefined")
+      return "/images/spin/Captain.png";
     if (path.startsWith("http")) return path;
     return `http://localhost:5000${path}`;
   };
@@ -117,7 +158,9 @@ export default function SpinBattle() {
     if (isSpinning) return;
     const currentTeam = currentTurn === "p1" ? p1Team : p2Team;
     if (Object.values(currentTeam).every((slot) => slot !== null)) {
-      addLog(`⚠️ ${currentTurn === "p1" ? "Player 1" : "Player 2"} team is full!`);
+      addLog(
+        `⚠️ ${currentTurn === "p1" ? "Player 1" : "Player 2"} team is full!`,
+      );
       return;
     }
     setIsSpinning(true);
@@ -170,8 +213,15 @@ export default function SpinBattle() {
     setP2SkipUsed(false);
     setCurrentTurn("p1");
     setLogs(["🔄 Battle reset!"]);
-    setIsBattleOver(false); 
+    setIsBattleOver(false);
     setIsMenuOpen(false);
+    // 2. Trigger the popup message
+    setResetMessage(true);
+
+    // 3. Hide the message after 2 seconds
+    setTimeout(() => {
+      setResetMessage(false);
+    }, 2000);
   };
 
   const renderSlot = (role: string, team: Team) => {
@@ -191,19 +241,46 @@ export default function SpinBattle() {
       Healer: "/images/after-spin/healer-frame.png",
     };
     const currentFrame = character ? filledFrameMap[role] : emptyFrameMap[role];
-    const imageSettings = { width: "125px", height: "125px", top: "26px", left: "10px" };
+    const imageSettings = {
+      width: "125px",
+      height: "125px",
+      top: "26px",
+      left: "10px",
+    };
 
     return (
       <div key={role} className="flex flex-col items-center shrink-0">
-        <div className="relative shrink-0" style={{ width: "145px", height: "185px" }}>
-          {character && <div className="absolute z-0 bg-black rounded-md" style={imageSettings}></div>}
+        <div
+          className="relative shrink-0"
+          style={{ width: "145px", height: "185px" }}
+        >
           {character && (
-            <div className="absolute z-1 overflow-hidden rounded-md" style={imageSettings}>
-              <Image src={getImageUrl(character.image)} alt={character.name} fill style={{ objectFit: "cover", objectPosition: "top" }} unoptimized={true} />
+            <div
+              className="absolute z-0 bg-black rounded-md"
+              style={imageSettings}
+            ></div>
+          )}
+          {character && (
+            <div
+              className="absolute z-1 overflow-hidden rounded-md"
+              style={imageSettings}
+            >
+              <Image
+                src={getImageUrl(character.image)}
+                alt={character.name}
+                fill
+                style={{ objectFit: "cover", objectPosition: "top" }}
+                unoptimized={true}
+              />
             </div>
           )}
           <div className="absolute inset-0 z-10 pointer-events-none">
-            <Image src={currentFrame} alt={`${role} Frame`} fill style={{ objectFit: "contain" }} />
+            <Image
+              src={currentFrame}
+              alt={`${role} Frame`}
+              fill
+              style={{ objectFit: "contain" }}
+            />
           </div>
         </div>
         <div className="bg-black border border-[#c89b3c]/30 mt-1 flex items-center justify-center py-1 shrink-0 w-36 h-5.5">
@@ -237,90 +314,261 @@ export default function SpinBattle() {
 
     const shiftClass = side === "left" ? "ml-12" : "mr-12";
     return (
-      <div className={`team-wrapper flex items-center gap-4 mt-4 justify-center ${side === "right" ? "flex-row-reverse" : ""} ${shiftClass}`}>
+      <div
+        className={`team-wrapper flex items-center gap-4 mt-4 justify-center ${side === "right" ? "flex-row-reverse" : ""} ${shiftClass}`}
+      >
         {gridPart} {isolatedPart}
       </div>
     );
   };
 
+  // Inside SpinBattle component in app/spin-battle/page.tsx
   const availableCharacters = useMemo(() => {
-    const takenIds = new Set([
-      ...Object.values(p1Team).map((c) => c?.id),
-      ...Object.values(p2Team).map((c) => c?.id),
-    ].filter((id): id is number => id !== undefined && id !== null));
-    return characterList.filter((char) => !takenIds.has(char.id));
-  }, [characterList, p1Team, p2Team]);
+  const savedWorld = typeof window !== 'undefined' ? localStorage.getItem('selectedWorld') : null;
+  
+  const takenIds = new Set([
+    ...Object.values(p1Team).map((c) => c?.id),
+    ...Object.values(p2Team).map((c) => c?.id),
+  ].filter((id): id is number => id !== undefined && id !== null));
+
+  const filtered = characterList.filter((char) => !takenIds.has(char.id));
+
+  if (savedWorld) {
+    const cleanWorld = savedWorld.toLowerCase().replace(/-/g, " ");
+    const worldCharacters = filtered.filter((char) => 
+      char.origin?.toLowerCase().includes(cleanWorld)
+    );
+
+    // ✅ REPLACE YOUR IF BLOCK WITH THIS ONE LINE:
+    return worldCharacters.length > 0 ? worldCharacters : filtered;
+  }
+
+  return filtered;
+  
+}, [characterList, p1Team, p2Team]);
 
   return (
     <>
       {isPortrait && (
         <div className="rotate-device-overlay">
-           <button className="rotate-hamburger-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-             <svg width="30" height="30" viewBox="0 0 24 24" stroke="#c89b3c" strokeWidth="2" strokeLinecap="round">
-               <line x1="3" y1="12" x2="21" y2="12"></line>
-               <line x1="3" y1="6" x2="21" y2="6"></line>
-               <line x1="3" y1="18" x2="21" y2="18"></line>
-             </svg>
-           </button>
-           {isMenuOpen && (
-             <div className="rotate-mobile-menu">
-               <Link href="/" className="rotate-menu-link">HOME</Link>
-               <button onClick={handleReset} className="rotate-menu-link">RESET BATTLE</button>
-             </div>
-           )}
-           <svg className="rotate-icon" viewBox="0 0 24 24">
-             <path d="M16.48 2.52c3.27 1.55 5.61 4.72 5.97 8.48h1.5C23.44 4.84 18.29 0 12 0l-.66.03 3.81 3.81 1.33-1.32zm-6.25-.77c-.59-.59-1.54-.59-2.12 0L1.75 8.11c-.59.59-.59 1.54 0 2.12l12.02 12.02c.59.59 1.54.59 2.12 0l6.36-6.36c.59-.59.59-1.54 0-2.12L10.23 1.75zm4.6 19.44L2.81 9.17l6.36-6.36 12.02 12.02-6.36 6.36zm-7.31.29C4.25 19.94 1.91 16.76 1.55 13H.05C.56 19.16 5.71 24 12 24l.66-.03-3.81-3.81-1.33 1.32z"/>
-           </svg>
-           <p className="rotate-text">Please Rotate Your Device</p>
+          <button
+            className="rotate-hamburger-btn"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              stroke="#c89b3c"
+              strokeWidth="2"
+              strokeLinecap="round"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+
+          {isMenuOpen && (
+            <div className="rotate-mobile-menu">
+              <Link href="/" className="rotate-menu-link">
+                HOME
+              </Link>
+              <button onClick={handleReset} className="rotate-menu-link">
+                RESET BATTLE
+              </button>
+            </div>
+          )}
+          <svg className="rotate-icon" viewBox="0 0 24 24">
+            <path d="M16.48 2.52c3.27 1.55 5.61 4.72 5.97 8.48h1.5C23.44 4.84 18.29 0 12 0l-.66.03 3.81 3.81 1.33-1.32zm-6.25-.77c-.59-.59-1.54-.59-2.12 0L1.75 8.11c-.59.59-.59 1.54 0 2.12l12.02 12.02c.59.59 1.54.59 2.12 0l6.36-6.36c.59-.59.59-1.54 0-2.12L10.23 1.75zm4.6 19.44L2.81 9.17l6.36-6.36 12.02 12.02-6.36 6.36zm-7.31.29C4.25 19.94 1.91 16.76 1.55 13H.05C.56 19.16 5.71 24 12 24l.66-.03-3.81-3.81-1.33 1.32z" />
+          </svg>
+          <p className="rotate-text">Please Rotate Your Device</p>
         </div>
       )}
 
       {!hasStarted && !isPortrait && (
         <div className="fixed inset-0 z-9999 bg-black flex flex-col items-center justify-center">
-            <p className="text-white mb-8 text-xl tracking-wider font-light opacity-80">FOR THE BEST EXPERIENCE</p>
-            <button onClick={handleStartInteraction} className="px-8 py-4 bg-[#c89b3c] text-black font-black text-xl rounded border-4 border-white hover:scale-105 transition-transform">
-                CLICK TO START (FULL SCREEN)
-            </button>
+          <p className="text-white mb-8 text-xl tracking-wider font-light opacity-80">
+            FOR THE BEST EXPERIENCE
+          </p>
+          <button
+            onClick={handleStartInteraction}
+            className="px-8 py-4 bg-[#c89b3c] text-black font-black text-xl rounded border-4 border-white hover:scale-105 transition-transform"
+          >
+            CLICK TO START (FULL SCREEN)
+          </button>
         </div>
       )}
 
       <main className="spin-battle-page hide-global-nav">
+        {resetMessage && (
+          <div className="reset-popup-toast">Battle has been reset</div>
+        )}
         <RoleSelectionModal
           isOpen={isModalOpen}
           character={pendingCharacter}
-          takenRoles={currentTurn === "p1" ? Object.keys(p1Team).filter((k) => p1Team[k] !== null) : Object.keys(p2Team).filter((k) => p2Team[k] !== null)}
+          takenRoles={
+            currentTurn === "p1"
+              ? Object.keys(p1Team).filter((k) => p1Team[k] !== null)
+              : Object.keys(p2Team).filter((k) => p2Team[k] !== null)
+          }
           canSkip={currentTurn === "p1" ? !p1SkipUsed : !p2SkipUsed}
           onConfirm={handleRoleConfirm}
           onSkip={handleSkip}
+          recruitmentLimit={recruitmentLimit}
         />
 
         <WelcomeModal />
 
         {!isPortrait && (
-          <div className="battle-header-bar">
-            <div className="desktop-nav">
-              <Link href="/" className="header-link">HOME</Link>
-              <button onClick={handleReset} className="header-link">RESET BATTLE</button>
+          <div className="battle-header-bar flex items-center justify-between px-6 w-full relative">
+            {/* LOCK WARNING POPUP */}
+            {showLockWarning && (
+              <div className="absolute top-16 right-6 bg-[#ff4d4d] text-white px-4 py-2 rounded shadow-lg z-1000 font-bold text-xs animate-bounce border border-white">
+                ⚠️ ARENA LOCKED! RESET BATTLE TO CHANGE SETTINGS
+              </div>
+            )}
+
+            {/* LEFT SIDE: Home */}
+            <div className="flex justify-start">
+              <Link href="/" className="header-link">
+                HOME
+              </Link>
+            </div>
+
+            {/* RIGHT SIDE: Reset & Settings */}
+            <div className="flex items-center gap-4">
+              <button onClick={handleReset} className="header-link">
+                RESET BATTLE
+              </button>
+
+              <div className="relative">
+                <button
+                  onClick={() => {
+                    const isGameActive =
+                      p1Power > 0 || p2Power > 0 || isSpinning;
+                    if (isGameActive) {
+                      // Show warning if game started
+                      setShowLockWarning(true);
+                      setTimeout(() => setShowLockWarning(false), 3000);
+                    } else {
+                      setIsFilterOpen(!isFilterOpen);
+                    }
+                  }}
+                  className="header-link"
+                  style={{
+                    opacity: p1Power > 0 || p2Power > 0 ? 0.6 : 1,
+                    cursor:
+                      p1Power > 0 || p2Power > 0 ? "not-allowed" : "pointer",
+                  }}
+                >
+                  ARENA SETTINGS
+                </button>
+
+                {/* THE SETTINGS MENU (Inside) */}
+                {isFilterOpen && (
+                  <div className="absolute top-12 right-0 z-100 bg-[#0a0a0a] border-2 border-[#c89b3c] p-4 rounded shadow-[0_0_25px_rgba(0,0,0,1)] flex flex-col gap-4 min-w-60">
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[10px] text-[#c89b3c] font-black uppercase">
+                        Battlefield
+                      </label>
+                      <select
+                        className="bg-black text-white border border-[#333] p-1.5 rounded text-xs outline-none focus:border-[#c89b3c]"
+                        value={pendingWorld}
+                        onChange={(e) => setPendingWorld(e.target.value)}
+                      >
+                        <option value="">NONE (NO BUFF)</option>
+                        <option value="grand-line">GRAND LINE</option>
+                        <option value="marine-base">MARINE BASE</option>
+                        <option value="sky-island">SKY ISLAND</option>
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <label className="text-[10px] text-[#c89b3c] font-black uppercase">
+                        Recruit Time (Sec)
+                      </label>
+                      <input
+                        type="number"
+                        min="10"
+                        max="120"
+                        value={recruitmentLimit}
+                        onChange={(e) =>
+                          setRecruitmentLimit(parseInt(e.target.value) || 10)
+                        }
+                        className="bg-black text-white border border-[#333] p-1.5 rounded text-xs text-center outline-none"
+                      />
+                    </div>
+
+                    {/* ✅ Updated Apply Logic - No Reload */}
+                    <button 
+                      onClick={() => {
+                        // --- 1. HANDLE WORLD SAVING ---
+                        if (pendingWorld === "") {
+                          localStorage.removeItem('selectedWorld');
+                          setWorldName("NONE"); 
+                        } else {
+                          localStorage.setItem('selectedWorld', pendingWorld);
+                          setWorldName(pendingWorld.replace(/-/g, ' ').toUpperCase());
+                        }
+
+                        // --- 2. HANDLE TIME SAVING ---
+                        // ✅ Add this line to save the number you typed
+                        localStorage.setItem('recruitmentLimit', recruitmentLimit.toString());
+
+                        // --- 3. UI UPDATES ---
+                        setIsFilterOpen(false);
+                        addLog(`⚙️ Settings Saved: World [${pendingWorld || "NONE"}] | Time [${recruitmentLimit}s]`);
+                      }}
+                      className="mt-2 bg-[#c89b3c] text-black font-black py-2 rounded text-[11px] uppercase tracking-widest hover:bg-white transition-colors"
+                    >
+                      Apply Settings
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
 
         <div className="title-section">
-          <div style={{ position: "relative", width: "500px", height: "120px" }}>
-            <Image src="/images/spin/spin-battle.png" alt="Spin Battle" fill style={{ objectFit: "contain" }} priority />
+          <div
+            style={{ position: "relative", width: "500px", height: "120px" }}
+          >
+            <Image
+              src="/images/spin/spin-battle.png"
+              alt="Spin Battle"
+              fill
+              style={{ objectFit: "contain" }}
+              priority
+            />
           </div>
         </div>
 
         <div className="battle-arena-grid">
-          <div className={`player-column p1-column ${currentTurn === "p1" ? "active" : "inactive"}`}>
+          <div
+            className={`player-column p1-column ${currentTurn === "p1" ? "active" : "inactive"}`}
+          >
             <div className="player-panel-image">
-              <Image src="/images/spin/Player-1-panel.png" alt="Player 1" fill style={{ objectFit: "contain" }} />
+              <Image
+                src="/images/spin/Player-1-panel.png"
+                alt="Player 1"
+                fill
+                style={{ objectFit: "contain" }}
+              />
               <div className="overlay-world-name">
-                <p className="text-[#c89b3c] font-bold text-lg tracking-widest font-serif" style={{ textShadow: "1px 1px 0 #000" }}>{worldName}</p>
+                <p
+                  className="text-[#c89b3c] font-bold text-lg tracking-widest font-serif"
+                  style={{ textShadow: "1px 1px 0 #000" }}
+                >
+                  {worldName}
+                </p>
               </div>
               <div className="overlay-power-score">
-                 <p className="power-text">{p1Power.toLocaleString()}</p>
-                 <p className="text-white/60 text-xs uppercase tracking-widest">Power Level</p>
+                <p className="power-text">{p1Power.toLocaleString()}</p>
+                <p className="text-white/60 text-xs uppercase tracking-widest">
+                  Power Level
+                </p>
               </div>
             </div>
             {renderTeamSlots(p1Team, "left")}
@@ -331,58 +579,152 @@ export default function SpinBattle() {
               onSpinFinish={onSpinFinish}
               onSpinClick={handleSpinClick}
               isSpinning={isSpinning}
-              characterList={availableCharacters} 
+              characterList={availableCharacters}
             />
             <div className="mt-24 text-[#c89b3c] player-turn font-bold uppercase tracking-widest bg-black/50 px-4 py-1 rounded-full border border-[#c89b3c]/30">
               Turn: {currentTurn === "p1" ? "Player 1" : "Player 2"}
             </div>
           </div>
-          
-          <div className={`player-column p2-column ${currentTurn === "p2" ? "active" : "inactive"}`}>
+
+          <div
+            className={`player-column p2-column ${currentTurn === "p2" ? "active" : "inactive"}`}
+          >
             <div className="player-panel-image">
-              <Image src="/images/spin/Player-2-panel.png" alt="Player 2" fill style={{ objectFit: "contain" }} />
+              <Image
+                src="/images/spin/Player-2-panel.png"
+                alt="Player 2"
+                fill
+                style={{ objectFit: "contain" }}
+              />
               <div className="overlay-world-name">
-                <p className="text-[#c89b3c] font-bold text-lg tracking-widest font-serif" style={{ textShadow: "1px 1px 0 #000" }}>{worldName}</p>
+                <p
+                  className="text-[#c89b3c] font-bold text-lg tracking-widest font-serif"
+                  style={{ textShadow: "1px 1px 0 #000" }}
+                >
+                  {worldName}
+                </p>
               </div>
               <div className="overlay-power-score">
-                 <p className="power-text">{p2Power.toLocaleString()}</p>
-                 <p className="text-white/60 text-xs uppercase tracking-widest">Power Level</p>
+                <p className="power-text">{p2Power.toLocaleString()}</p>
+                <p className="text-white/60 text-xs uppercase tracking-widest">
+                  Power Level
+                </p>
               </div>
             </div>
             {renderTeamSlots(p2Team, "right")}
           </div>
         </div>
-        
+
         <div className="bottom-area-wrapper">
           <BattleInfoPanel logs={logs} p1Power={p1Power} p2Power={p2Power} />
         </div>
 
-        <BattleResultModal 
+        <BattleResultModal
           isOpen={isBattleOver}
-          player1Team={p1Team as Record<string, CharacterData>} 
+          player1Team={p1Team as Record<string, CharacterData>}
           player2Team={p2Team as Record<string, CharacterData>}
           onRestart={handleReset}
         />
 
         {/* ✅ FINAL PLACEMENT: Hamburger button and dropdown menu outside header */}
         {!isPortrait && (
-          <>
-            <button className="hamburger-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              <svg width="30" height="30" viewBox="0 0 24 24" stroke="#c89b3c" strokeWidth="2" strokeLinecap="round">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
-            </button>
+  <>
+    {/* ⚠️ LOCK WARNING POPUP */}
+    {showLockWarning && (
+      <div className="fixed top-20 right-6 bg-[#ff4d4d] text-white px-3 py-1.5 rounded shadow-lg z-1001 font-bold text-[10px] animate-bounce border border-white lg:hidden">
+        ⚠️ ARENA LOCKED! RESET BATTLE TO CHANGE SETTINGS
+      </div>
+    )}
 
-            {isMenuOpen && (
-              <div className="mobile-menu-dropdown">
-                <Link href="/" className="header-link mobile-link">HOME</Link>
-                <button onClick={handleReset} className="header-link mobile-link">RESET BATTLE</button>
-              </div>
-            )}
-          </>
-        )}
+    {/* ⚙️ ARENA SETTINGS (FILTER ICON) */}
+    {/* ✅ Added 'lg:hidden' to hide this on Desktop/PC screens */}
+    <div className="fixed top-6 right-20 z-1000 lg:hidden"> 
+      <button 
+        onClick={() => {
+          const isGameActive = p1Power > 0 || p2Power > 0 || isSpinning;
+          if (isGameActive) {
+            setShowLockWarning(true);
+            setTimeout(() => setShowLockWarning(false), 3000);
+          } else {
+            setIsFilterOpen(!isFilterOpen);
+          }
+        }}
+        className="flex items-center justify-center p-1 hover:scale-110 transition-transform bg-transparent border-none outline-none"
+        style={{ opacity: (p1Power > 0 || p2Power > 0) ? 0.6 : 1 }}  
+      >
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#c89b3c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+        </svg>
+      </button>
+
+      {/* THE SETTINGS DROPDOWN */}
+      {isFilterOpen && (
+        <div className="absolute top-12 right-0 bg-[#0a0a0a] border-2 border-[#c89b3c] p-4 rounded shadow-[0_0_25px_rgba(0,0,0,1)] flex flex-col gap-4 min-w-60">
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] text-[#c89b3c] font-black uppercase tracking-tighter">Battlefield</label>
+            <select 
+              className="bg-black text-white border border-[#333] p-1.5 rounded text-xs outline-none focus:border-[#c89b3c]"
+              value={pendingWorld} 
+              onChange={(e) => setPendingWorld(e.target.value)}
+            >
+              <option value="">NONE (NO BUFF)</option>
+              <option value="grand-line">GRAND LINE</option>
+              <option value="marine-base">MARINE BASE</option>
+              <option value="sky-island">SKY ISLAND</option>
+            </select>
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <label className="text-[10px] text-[#c89b3c] font-black uppercase tracking-tighter">Recruit Time (Sec)</label>
+            <input 
+              type="number" min="10" max="120"
+              value={recruitmentLimit}
+              onChange={(e) => setRecruitmentLimit(parseInt(e.target.value) || 10)}
+              className="bg-black text-white border border-[#333] p-1.5 rounded text-xs text-center outline-none"
+            />
+          </div>
+
+          <button 
+            onClick={() => {
+              if (pendingWorld === "") {
+                localStorage.removeItem('selectedWorld');
+                setWorldName("NONE");
+              } else {
+                localStorage.setItem('selectedWorld', pendingWorld);
+                setWorldName(pendingWorld.replace(/-/g, ' ').toUpperCase());
+              }
+              localStorage.setItem('recruitmentLimit', recruitmentLimit.toString());
+              setIsFilterOpen(false);
+              addLog(`⚙️ Applied: ${pendingWorld || "NONE"} | ${recruitmentLimit}s`);
+            }}
+            className="mt-2 bg-[#c89b3c] text-black font-black py-2 rounded text-[11px] uppercase tracking-widest hover:bg-white transition-colors"
+          >
+            Apply Settings
+          </button>
+        </div>
+      )}
+    </div>
+
+    {/* 🍔 HAMBURGER BUTTON - visible on all devices */}
+    <button
+      className="hamburger-btn"
+      onClick={() => setIsMenuOpen(!isMenuOpen)}
+    >
+      <svg width="30" height="30" viewBox="0 0 24 24" stroke="#c89b3c" strokeWidth="2" strokeLinecap="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    {isMenuOpen && (
+      <div className="mobile-menu-dropdown">
+        <Link href="/" className="header-link mobile-link">HOME</Link>
+        <button onClick={handleReset} className="header-link mobile-link">RESET BATTLE</button>
+      </div>
+    )}
+  </>
+)}
       </main>
     </>
   );

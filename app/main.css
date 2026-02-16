@@ -472,7 +472,14 @@ section {
 
 .footer-tagline {
     font-family: var(--font-cinzel), serif;
-    font-size: 14px; letter-spacing: 2px; opacity: 0.85; margin-bottom: 40px;
+    font-size: 14px; letter-spacing: 2px; opacity: 0.85; margin-bottom: 30px;
+}
+
+.footer-contact{
+    display: flex;
+    justify-content: center; /* ✅ Centers the email icon and text */
+    width: 100%;
+    margin: 15px 0;
 }
 
 .footer-links {
@@ -831,6 +838,10 @@ h1, h2, h3, h4, .about-tital {
     font-weight: 700;
 }
 
+.log-title{
+        padding-bottom: 5px;
+}
+
 .log-scroll-area {
     flex: 1; overflow-y: auto; padding-right: 15px;
     background: rgba(0,0,0,0.2); /* Darker inner area */
@@ -860,6 +871,19 @@ h1, h2, h3, h4, .about-tital {
     border-bottom: none;
 }
 
+.stats-box h4{
+    color: white;
+    font-family: var(--font-cinzel), serif;
+    padding: 10px;
+}
+
+.power-value{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffb347; /* Highlight latest entry */
+    font-weight: bold;
+}
 
 /* =========================
    MOBILE RESPONSIVE
@@ -934,3 +958,48 @@ h1, h2, h3, h4, .about-tital {
 
 
 
+/* main.css */
+/* Smooth Popup Animation */
+.reset-popup-toast {
+  position: fixed;
+  top: 10px; /* Distance from top */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(10, 10, 10, 0.95);
+  color: #d4af37; /* Pirate Gold */
+  padding: 15px 30px;
+  border: 2px solid #d4af37;
+  border-radius: 8px;
+  font-family: var(--font-cinzel);
+  font-weight: bold;
+  letter-spacing: 2px;
+  z-index: 10000;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+  pointer-events: none;
+  text-align: center;
+  
+  /* ✅ THE SMOOTH PART */
+  animation: pirateFadeIn 0.5s ease forwards, pirateFadeOut 0.5s ease 2.5s forwards;
+}
+
+@keyframes pirateFadeIn {
+  from {
+    opacity: 0;
+    top: 20px; /* Start a bit higher */
+  }
+  to {
+    opacity: 1;
+    top: 40px;
+  }
+}
+
+@keyframes pirateFadeOut {
+  from {
+    opacity: 1;
+    top: 40px;
+  }
+  to {
+    opacity: 0;
+    top: 30px; /* Slide up slightly as it disappears */
+  }
+}

@@ -17,14 +17,19 @@ export default function SpinWheel({ onSpinFinish, onSpinClick, isSpinning, chara
 
   // --- UPDATED SIZES (BIGGER WHEEL) ---
   const WHEEL_SIZE = 520; 
-  const CENTER_HOLE_SIZE = 300; 
+  const CENTER_HOLE_SIZE = 200; 
   
   const getImageUrl = (path: string | null) => {
-      if (!path || path === "null" || path === "undefined" || path.length < 3) return null;
-      if (path.startsWith("http")) return path;
-      const cleanPath = path.startsWith("/") ? path : `/${path}`;
-      return `http://localhost:5000${cleanPath}`;
-  };
+  // ✅ FIX: Instead of return null, return a default "no-image" path
+  if (!path || path === "null" || path === "undefined" || path.length < 3) {
+    return "/images/spin/Captain.png"; // Make sure this path exists!
+  }
+  
+  if (path.startsWith("http")) return path;
+  
+  const cleanPath = path.startsWith("/") ? path : `/${path}`;
+  return `http://localhost:5000${cleanPath}`;
+};
 
   const activeChar = displayCharacter || (characterList.length > 0 ? characterList[0] : null);
   const currentImageSrc = activeChar ? getImageUrl(activeChar.image) : null;
